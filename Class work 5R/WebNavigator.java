@@ -1,7 +1,6 @@
-package web_nav;
-
 // TODO: Choose imports based on DS choice
 import java.util.Scanner;
+import java.util.Stack;
 
 public class WebNavigator {
 
@@ -10,12 +9,15 @@ public class WebNavigator {
     // TODO: You choose the fields!
     // Any you want to add! Keep them private!
     // ???
+    Stack history, future;
 
     // Constructor
     WebNavigator () {
         // TODO: Initialize your new fields in constructor
         // ???
         current = null;
+        history  = new Stack();
+        future = new Stack();
     }
 
     // Methods
@@ -54,6 +56,8 @@ public class WebNavigator {
     public void visit (String site) {
         // TODO
         // ???
+        if( current != null ) { history.push(current); }
+        current = site;
     }
 
     /*
@@ -63,11 +67,16 @@ public class WebNavigator {
     public void back () {
         // TODO
         // ???
+        if( !history.empty() ){
+            future.push(current);
+            current = (String) history.pop();
+        }
     }
 
     public void forw () {
         // TODO
         // ???
+        if( !future.empty() ) { visit( (String) future.pop() ); }
     }
 
     public static void main(String[] args) {
