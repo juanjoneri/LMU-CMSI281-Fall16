@@ -58,6 +58,7 @@ public class WebNavigator {
         // ???
         if( current != null ) { history.push(current); }
         current = site;
+        future = new Stack();
     }
 
     /*
@@ -75,7 +76,7 @@ public class WebNavigator {
 
     public void forw () {
         // TODO
-        // ??? THAT'S RIGHT, 11 LINES 😎
+        // ???
         if( !future.empty() ) { visit( (String) future.pop() ); }
     }
 
