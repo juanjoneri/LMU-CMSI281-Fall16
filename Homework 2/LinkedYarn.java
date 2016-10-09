@@ -42,6 +42,7 @@ public class LinkedYarn implements LinkedYarnInterface {
         } else {
             Node toInsert = new Node(toAdd);
             toInsert.next = head;
+            toInsert.prev = null;
             head.prev = toInsert;
             this.head = toInsert;
         }
@@ -65,7 +66,12 @@ public class LinkedYarn implements LinkedYarnInterface {
     }
 
     public void removeAll (String toNuke) {
-        throw new UnsupportedOperationException();
+
+        if( this.contains(toNuke) ){
+            Node nodeToNuke = find(toNuke);
+            nodeToNuke.prev.next = nodeToNuke.next;
+            nodeToNuke.next.prev = nodeToNuke.prev;
+        }
     }
 
     public int count (String toCount) {
