@@ -1,5 +1,3 @@
-package linked_yarn;
-
 import java.util.NoSuchElementException;
 
 public class LinkedYarn implements LinkedYarnInterface {
@@ -9,117 +7,139 @@ public class LinkedYarn implements LinkedYarnInterface {
     // -----------------------------------------------------------
     private Node head;
     private int size, uniqueSize, modCount;
-    
-    
+
+
     // -----------------------------------------------------------
     // Constructor
     // -----------------------------------------------------------
     LinkedYarn () {
-        // TODO
+        head = null;
+        size = 0;
+        uniqueSize = 0;
+        modCount = 0;
     }
-    
-    
+
+
     // -----------------------------------------------------------
     // Methods
     // -----------------------------------------------------------
     public boolean isEmpty () {
-        throw new UnsupportedOperationException();
+        return head == null;
     }
-    
+
     public int getSize () {
-        throw new UnsupportedOperationException();
+        return size;
     }
-    
+
     public int getUniqueSize () {
-        throw new UnsupportedOperationException();
+        return uniqueSize;
     }
-    
+
     public void insert (String toAdd) {
-        throw new UnsupportedOperationException();
+        if( this.contains(toAdd) ){
+            find(toAdd).count ++;
+        } else {
+            Node toInsert = new Node(toAdd);
+            toInsert.next = head;
+            head.prev = toInsert;
+            this.head = toInsert;
+        }
     }
-    
+
     public int remove (String toRemove) {
         throw new UnsupportedOperationException();
     }
-    
+
     public void removeAll (String toNuke) {
         throw new UnsupportedOperationException();
     }
-    
+
     public int count (String toCount) {
         throw new UnsupportedOperationException();
     }
-    
+
     public boolean contains (String toCheck) {
         throw new UnsupportedOperationException();
     }
-    
+
     public String getMostCommon () {
         throw new UnsupportedOperationException();
     }
-    
+
     public LinkedYarn clone () {
         throw new UnsupportedOperationException();
     }
-    
+
     public void swap (LinkedYarn other) {
         throw new UnsupportedOperationException();
     }
-    
+
     public LinkedYarn.Iterator getIterator () {
         throw new UnsupportedOperationException();
     }
-    
-    
+
+    private Node find(String text){
+        //Returns the Node that contains that text
+        //Or null if it could not find it
+        if( this.contains(text) ){
+            Iterator iterator = new Iterator(this);
+            while( !iterator.getString().equals(text) && iterator.hasNext() ){
+                iterator.next();
+            }
+            return iterator.getString().equals(text) ? iterator.current : null;
+        } else {
+            return null;
+        }
+    }
     // -----------------------------------------------------------
     // Static methods
     // -----------------------------------------------------------
-    
+
     public static LinkedYarn knit (LinkedYarn y1, LinkedYarn y2) {
         throw new UnsupportedOperationException();
     }
-    
+
     public static LinkedYarn tear (LinkedYarn y1, LinkedYarn y2) {
         throw new UnsupportedOperationException();
     }
-    
+
     public static boolean sameYarn (LinkedYarn y1, LinkedYarn y2) {
         throw new UnsupportedOperationException();
     }
-    
-    
+
+
     // -----------------------------------------------------------
     // Private helper methods
     // -----------------------------------------------------------
-    
+
     // You should add some methods here!
-    
-    
+
+
     // -----------------------------------------------------------
     // Inner Classes
     // -----------------------------------------------------------
-    
+
     public class Iterator implements LinkedYarnIteratorInterface {
         LinkedYarn owner;
         Node current;
         int itModCount;
-        
+
         Iterator (LinkedYarn y) {
             // TODO
         }
-        
+
         public boolean hasNext () {
             throw new UnsupportedOperationException();
         }
-        
+
         public boolean hasPrev () {
             throw new UnsupportedOperationException();
         }
-        
+
         public boolean isValid () {
             throw new UnsupportedOperationException();
         }
-        
+
         public String getString () {
             throw new UnsupportedOperationException();
         }
@@ -127,26 +147,31 @@ public class LinkedYarn implements LinkedYarnInterface {
         public void next () {
             throw new UnsupportedOperationException();
         }
-        
+
         public void prev () {
             throw new UnsupportedOperationException();
         }
-        
+
         public void replaceAll (String toReplaceWith) {
             throw new UnsupportedOperationException();
         }
-        
+
     }
-    
+
     class Node {
         Node next, prev;
         String text;
         int count;
-        
+
         Node (String t, int c) {
             text = t;
             count = c;
         }
+
+        Node (String t) {
+            text = t;
+            count = 1;
+        }
     }
-    
+
 }

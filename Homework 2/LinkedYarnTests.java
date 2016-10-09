@@ -1,21 +1,19 @@
-package linked_yarn;
-
 import static org.junit.Assert.*;
 
 import org.junit.*;
 import org.junit.rules.Timeout;
 
 public class LinkedYarnTests {
-    
+
     // =================================================
     // Test Configuration
     // =================================================
-    
+
     // Global timeout to prevent infinite loops from
     // crashing the test suite
     @Rule
     public Timeout globalTimeout = Timeout.seconds(2);
-    
+
     // Used as the basic empty LinkedYarn to test; the @Before
     // method is run before every @Test
     LinkedYarn ball;
@@ -23,12 +21,12 @@ public class LinkedYarnTests {
     public void init () {
         ball = new LinkedYarn();
     }
-    
-    
+
+
     // =================================================
     // Unit Tests
     // =================================================
-    
+
     // Initialization Tests
     // -------------------------------------------------
     @Test
@@ -153,7 +151,7 @@ public class LinkedYarnTests {
         }
         assertTrue(dolly.isEmpty());
         assertFalse(it.hasNext());
-        
+
         // Test prev()
         dolly = ball.clone();
         while (true) {
@@ -164,16 +162,16 @@ public class LinkedYarnTests {
         }
         assertTrue(dolly.isEmpty());
         assertFalse(it.hasPrev());
-        
+
         int countOfReplaced = ball.count(it.getString());
         it.replaceAll("replaced!");
         assertEquals(countOfReplaced, ball.count("replaced!"));
         assertTrue(it.isValid());
-        
+
         ball.insert("c");
         assertFalse(it.isValid());
     }
-    
+
     // Inter-LinkedYarn Tests
     // -------------------------------------------------
     @Test

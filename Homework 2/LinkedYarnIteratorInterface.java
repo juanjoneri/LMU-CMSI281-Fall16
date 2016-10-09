@@ -1,5 +1,3 @@
-package linked_yarn;
-
 public interface LinkedYarnIteratorInterface {
 
     boolean isValid ();
@@ -9,5 +7,5 @@ public interface LinkedYarnIteratorInterface {
     void next ();
     void prev ();
     void replaceAll (String toReplaceWith);
-    
+
 }
