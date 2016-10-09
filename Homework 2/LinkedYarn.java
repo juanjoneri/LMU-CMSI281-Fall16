@@ -39,12 +39,15 @@ public class LinkedYarn implements LinkedYarnInterface {
 
         if( this.contains(toAdd) ){
             find(toAdd).count ++;
+            size ++;
         } else {
             Node toInsert = new Node(toAdd);
             toInsert.next = head;
             toInsert.prev = null;
             head.prev = toInsert;
             this.head = toInsert;
+            size ++;
+            uniqueSize ++;
         }
     }
 
@@ -54,6 +57,7 @@ public class LinkedYarn implements LinkedYarnInterface {
             Node nodeToRemove = find(toRemove);
             if( nodeToRemove.count > 1 ){
                 nodeToRemove.count --;
+                size --;
                 return nodeToRemove.count;
             } else {
                 removeAll(toRemove);
@@ -71,6 +75,8 @@ public class LinkedYarn implements LinkedYarnInterface {
             Node nodeToNuke = find(toNuke);
             nodeToNuke.prev.next = nodeToNuke.next;
             nodeToNuke.next.prev = nodeToNuke.prev;
+            size --;
+            uniqueSize --;
         }
     }
 
@@ -93,7 +99,18 @@ public class LinkedYarn implements LinkedYarnInterface {
     }
 
     public String getMostCommon () {
-        throw new UnsupportedOperationException();
+
+        if(size != 0){
+            Node mostCommon = head;
+            Iterator iterator = new Iterator(this);
+            while( iterator.hasNext() ){
+                iterator.next();
+                mostCommon = iterator.current.count > mostCommon.count ? iterator.current : mostCommon;
+            }
+            return mostCommon.text;
+        } else {
+            return null;
+        }
     }
 
     public LinkedYarn clone () {
