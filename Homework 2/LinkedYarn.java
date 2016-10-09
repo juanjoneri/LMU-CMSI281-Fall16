@@ -75,11 +75,21 @@ public class LinkedYarn implements LinkedYarnInterface {
     }
 
     public int count (String toCount) {
-        throw new UnsupportedOperationException();
+
+        if( this.contains(toCount) ){
+            return find(toCount).count;
+        }
+        return 0;
     }
 
     public boolean contains (String toCheck) {
-        throw new UnsupportedOperationException();
+
+        Iterator iterator = new Iterator(this);
+        while( !iterator.getString().equals(toCheck) && iterator.hasNext() ){
+            iterator.next();
+        }
+
+        return iterator.current != null && iterator.getString().equals(toCheck) ? true : false;
     }
 
     public String getMostCommon () {
