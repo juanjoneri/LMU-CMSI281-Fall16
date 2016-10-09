@@ -114,11 +114,32 @@ public class LinkedYarn implements LinkedYarnInterface {
     }
 
     public LinkedYarn clone () {
-        throw new UnsupportedOperationException();
+
+        LinkedYarn newLinkedYarn = new LinkedYarn();
+        newLinkedYarn.head = this.head;
+
+        Iterator iterator = new Iterator(this);
+        while( iterator.hasNext() ){
+            iterator.next();
+            for( int i = 0; i < iterator.current.count; i ++ ){
+                newLinkedYarn.insert(iterator.current.text);
+            }
+        }
+        return newLinkedYarn;
     }
 
     public void swap (LinkedYarn other) {
-        throw new UnsupportedOperationException();
+        LinkedYarn otherClone = other.clone();
+
+        other.size = this.size;
+        other.uniqueSize = this.uniqueSize;
+        other.head = this.head;
+        other.modCount = this.modCount + 1;
+
+        this.size = otherClone.size;
+        this.uniqueSize = otherClone.uniqueSize;
+        this.head = otherClone.head;
+        this.modCount = otherClone.modCount + 1;
     }
 
     public LinkedYarn.Iterator getIterator () {
