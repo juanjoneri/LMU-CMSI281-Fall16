@@ -149,19 +149,6 @@ public class LinkedYarn implements LinkedYarnInterface {
         throw new UnsupportedOperationException();
     }
 
-    private Node find(String text){
-        //Returns the Node that contains that text
-        //Or null if it could not find it
-        if( this.contains(text) ){
-            Iterator iterator = new Iterator(this);
-            while( !iterator.getString().equals(text) && iterator.hasNext() ){
-                iterator.next();
-            }
-            return iterator.getString().equals(text) ? iterator.current : null;
-        } else {
-            return null;
-        }
-    }
     // -----------------------------------------------------------
     // Static methods
     // -----------------------------------------------------------
@@ -184,7 +171,19 @@ public class LinkedYarn implements LinkedYarnInterface {
     // -----------------------------------------------------------
 
     // You should add some methods here!
-
+    private Node find(String text){
+        //Returns the Node that contains that text
+        //Or null if it could not find it
+        if( this.contains(text) ){
+            Iterator iterator = new Iterator(this);
+            while( !iterator.getString().equals(text) && iterator.hasNext() ){
+                iterator.next();
+            }
+            return iterator.getString().equals(text) ? iterator.current : null;
+        } else {
+            return null;
+        }
+    }
 
     // -----------------------------------------------------------
     // Inner Classes
