@@ -49,6 +49,8 @@ public class LinkedYarn implements LinkedYarnInterface {
             size ++;
             uniqueSize ++;
         }
+
+        modCount ++;
     }
 
     public int remove (String toRemove) {
@@ -63,7 +65,7 @@ public class LinkedYarn implements LinkedYarnInterface {
                 removeAll(toRemove);
                 return 0;
             }
-
+            modCount ++;
         } else {
             return 0;
         }
@@ -77,6 +79,7 @@ public class LinkedYarn implements LinkedYarnInterface {
             nodeToNuke.next.prev = nodeToNuke.prev;
             size --;
             uniqueSize --;
+            modCount ++;
         }
     }
 
@@ -193,7 +196,9 @@ public class LinkedYarn implements LinkedYarnInterface {
         int itModCount;
 
         Iterator (LinkedYarn y) {
-            // TODO
+            owner = y;
+            current = y.head;
+            itModCount = y.modCount;
         }
 
         public boolean hasNext () {
