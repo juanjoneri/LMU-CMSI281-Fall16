@@ -197,31 +197,54 @@ public class LinkedYarn implements LinkedYarnInterface {
         }
 
         public boolean hasNext () {
-            throw new UnsupportedOperationException();
+            return current.next != null;
         }
 
         public boolean hasPrev () {
-            throw new UnsupportedOperationException();
+            return current.prev != null;
         }
 
         public boolean isValid () {
-            throw new UnsupportedOperationException();
+            return itModCount == owner.modCount;
         }
 
         public String getString () {
-            throw new UnsupportedOperationException();
+            return current.text;
         }
 
         public void next () {
-            throw new UnsupportedOperationException();
+
+            if( isValid() ) {
+                if( hasNext() ){
+                    current = current.next;
+                } else {
+                    throw new NoSuchElementException();
+                }
+            } else {
+                throw new IllegalStateException();
+            }
         }
 
         public void prev () {
-            throw new UnsupportedOperationException();
+
+            if( isValid() ) {
+                if( hasPrev() ){
+                    current = current.prev;
+                } else {
+                    throw new NoSuchElementException();
+                }
+            } else {
+                throw new IllegalStateException();
+            }
         }
 
         public void replaceAll (String toReplaceWith) {
-            throw new UnsupportedOperationException();
+
+            if( isValid() ) {
+                current.text = toReplaceWith;
+            } else {
+                throw new IllegalStateException();
+            }
         }
 
     }
