@@ -56,6 +56,7 @@ public class LinkedYarn implements LinkedYarnInterface {
     public int remove (String toRemove) {
 
         if( this.contains(toRemove) ){
+            modCount ++;
             Node nodeToRemove = find(toRemove);
             if( nodeToRemove.count > 1 ){
                 nodeToRemove.count --;
@@ -65,7 +66,6 @@ public class LinkedYarn implements LinkedYarnInterface {
                 removeAll(toRemove);
                 return 0;
             }
-            modCount ++;
         } else {
             return 0;
         }
@@ -154,15 +154,43 @@ public class LinkedYarn implements LinkedYarnInterface {
     // -----------------------------------------------------------
 
     public static LinkedYarn knit (LinkedYarn y1, LinkedYarn y2) {
-        throw new UnsupportedOperationException();
+
+        LinkedYarn knittedYarn = y1.clone();
+        Iterator iterator = y2.getIterator();
+
+        knittedYarn.insertNode(y2.head);
+        while ( iterator.hasNext() ) {
+            iterator.next();
+            knittedYarn.insertNode(iterator.current);
+        }
+        return knittedYarn;
     }
 
     public static LinkedYarn tear (LinkedYarn y1, LinkedYarn y2) {
-        throw new UnsupportedOperationException();
+
+        LinkedYarn tearedYarn = y1.clone();
+        Iterator iterator = y2.getIterator();
+
+        tearedYarn.removeNode(y2.head);
+        while ( iterator.hasNext() ) {
+            iterator.next();
+            tearedYarn.removeNode(iterator.current);
+        }
+        return tearedYarn;
     }
 
     public static boolean sameYarn (LinkedYarn y1, LinkedYarn y2) {
-        throw new UnsupportedOperationException();
+
+        if(y1.head != null && y2.head != null){
+            Iterator iterator = y2.getIterator();
+            boolean isSameYarn = y1.count(y2.head.text) == y2.head.count;
+            while ( iterator.hasNext() ) {
+                iterator.next();
+                isSameYarn = !( !isSameYarn || y1.count(iterator.current.text) != iterator.current.count );
+            }
+            return isSameYarn;
+        }
+        return true;
     }
 
 
@@ -182,6 +210,20 @@ public class LinkedYarn implements LinkedYarnInterface {
             return iterator.getString().equals(text) ? iterator.current : null;
         } else {
             return null;
+        }
+    }
+
+    private void insertNode(Node toAdd){
+        //Will add all ocurences of the string of that node to the LinkedYarn
+        for( int i = 0; i < toAdd.count; i ++ ){
+            this.insert(toAdd.text);
+        }
+    }
+
+    private void removeNode(Node toRemove){
+        //Will remove all ocurences of the string of that node from the LinkedYarn
+        for( int i = 0; i < toRemove.count; i ++ ){
+            this.remove(toRemove.text);
         }
     }
 
