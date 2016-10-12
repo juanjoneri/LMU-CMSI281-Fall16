@@ -108,12 +108,12 @@ public class LinkedYarn implements LinkedYarnInterface {
 
     public boolean contains (String toCheck) {
 
-        if (head != null) {
+        if ( !this.isEmpty() ) {
             Iterator iterator = getIterator();
             while( !iterator.getString().equals(toCheck) && iterator.hasNext() ){
                 iterator.next();
             }
-            return iterator.current != null && iterator.getString().equals(toCheck);
+            return iterator.getString().equals(toCheck);
         }
         return false;
     }
@@ -135,17 +135,19 @@ public class LinkedYarn implements LinkedYarnInterface {
 
     public LinkedYarn clone () {
 
-        LinkedYarn newLinkedYarn = new LinkedYarn();
-        if( this.head != null){
+
+        if( !this.isEmpty() ){
+            LinkedYarn newLinkedYarn = new LinkedYarn();
             newLinkedYarn.insert(this.head.text);
+            Iterator iterator = this.getIterator();
+            while( iterator.hasNext() ){
+                iterator.next();
+                newLinkedYarn.insert(iterator.getString());
+            }
+            return newLinkedYarn;
         }
 
-        Iterator iterator = getIterator();
-        while( iterator.hasNext() ){
-            iterator.next();
-            newLinkedYarn.insert(iterator.getString());
-        }
-        return newLinkedYarn;
+        return null;
     }
 
     public void swap (LinkedYarn other) {
@@ -172,28 +174,38 @@ public class LinkedYarn implements LinkedYarnInterface {
 
     public static LinkedYarn knit (LinkedYarn y1, LinkedYarn y2) {
 
-        LinkedYarn knittedYarn = y1.clone();
-        Iterator iterator = y2.getIterator();
+        if( !y1.isEmpty() && !y2.isEmpty() ) {
+            LinkedYarn knittedYarn = y1.clone();
+            Iterator iterator = y2.getIterator();
 
-        knittedYarn.insertNode(y2.head);
-        while ( iterator.hasNext() ) {
-            iterator.next();
-            knittedYarn.insertNode(iterator.current);
+            knittedYarn.insert(y2.head.text);
+            while (iterator.hasNext()) {
+                iterator.next();
+                knittedYarn.insert(iterator.getString());
+            }
+            return knittedYarn;
         }
-        return knittedYarn;
+        else {
+            return y1.isEmpty() ? y2.clone() : y1.clone();
+        }
     }
 
     public static LinkedYarn tear (LinkedYarn y1, LinkedYarn y2) {
 
-        LinkedYarn tearedYarn = y1.clone();
-        Iterator iterator = y2.getIterator();
+        if( !y1.isEmpty() && !y2.isEmpty()) {
 
-        tearedYarn.removeNode(y2.head);
-        while ( iterator.hasNext() ) {
-            iterator.next();
-            tearedYarn.removeNode(iterator.current);
+            LinkedYarn tearedYarn = y1.clone();
+            Iterator iterator = y2.getIterator();
+
+            tearedYarn.remove(y2.head.text);
+            while (iterator.hasNext()) {
+                iterator.next();
+                tearedYarn.remove(iterator.getString());
+            }
+            return tearedYarn;
+        } else {
+            return y1.isEmpty() ? null : y1.clone();
         }
-        return tearedYarn;
     }
 
     public static boolean sameYarn (LinkedYarn y1, LinkedYarn y2) {
@@ -220,7 +232,7 @@ public class LinkedYarn implements LinkedYarnInterface {
         //Returns the Node that contains that text
         //Or null if it could not find it
         if( this.contains(text) ){
-            Iterator iterator = getIterator();
+            Iterator iterator = this.getIterator();
             while( !iterator.getString().equals(text) && iterator.hasNext() ){
                 iterator.next();
             }
@@ -230,17 +242,20 @@ public class LinkedYarn implements LinkedYarnInterface {
         }
     }
 
-    private void insertNode(Node toAdd){
-        //Will add all ocurences of the string of that node to the LinkedYarn
-        for( int i = 0; i < toAdd.count; i ++ ){
-            this.insert(toAdd.text);
-        }
-    }
-
-    private void removeNode(Node toRemove){
-        //Will remove all ocurences of the string of that node from the LinkedYarn
-        for( int i = 0; i < toRemove.count; i ++ ){
-            this.remove(toRemove.text);
+    public String toString(){
+        if(this.isEmpty()){
+            return "{ }";
+        } else {
+            Iterator iterator = this.getIterator();
+            String toPrint = "{ ";
+            toPrint += iterator.getString();
+            while (iterator.hasNext()){
+                iterator.next();
+                toPrint += ", ";
+                toPrint += iterator.getString();
+            }
+            toPrint += " }";
+            return toPrint;
         }
     }
 
@@ -258,6 +273,7 @@ public class LinkedYarn implements LinkedYarnInterface {
             owner = y;
             current = y.head;
             itModCount = y.modCount;
+            index = 1;
         }
 
         public boolean hasNext () {
@@ -265,7 +281,7 @@ public class LinkedYarn implements LinkedYarnInterface {
         }
 
         public boolean hasPrev () {
-            return index > 0  || current.prev != null;
+            return index > 1  || current.prev != null;
         }
 
         public boolean isValid () {
@@ -284,7 +300,7 @@ public class LinkedYarn implements LinkedYarnInterface {
                         index ++;
                     } else {
                         current = current.next;
-                        index = 0;
+                        index = 1;
                     }
                 } else {
                     throw new NoSuchElementException();
@@ -298,12 +314,12 @@ public class LinkedYarn implements LinkedYarnInterface {
 
             if( isValid() ) {
                 if( hasPrev() ){
-                    if (index > 0) {
+                    if (index > 1) {
                         index --;
                     }
                     else{
                         current = current.prev;
-                        index = 0;
+                        index = 1;
                     }
                 } else {
                     throw new NoSuchElementException();
