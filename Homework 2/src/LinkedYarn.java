@@ -137,13 +137,13 @@ public class LinkedYarn implements LinkedYarnInterface {
 
         LinkedYarn newLinkedYarn = new LinkedYarn();
         if( this.head != null){
-            newLinkedYarn.insertNode(this.head);
+            newLinkedYarn.insert(this.head.text);
         }
 
         Iterator iterator = getIterator();
         while( iterator.hasNext() ){
             iterator.next();
-            newLinkedYarn.insertNode(iterator.current);
+            newLinkedYarn.insert(iterator.getString());
         }
         return newLinkedYarn;
     }
