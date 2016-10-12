@@ -251,7 +251,8 @@ public class LinkedYarn implements LinkedYarnInterface {
     public class Iterator implements LinkedYarnIteratorInterface {
         LinkedYarn owner;
         Node current;
-        int itModCount;
+        //index designates the position inside the node (0 being 1st occurrence)
+        int itModCount, index;
 
         Iterator (LinkedYarn y) {
             owner = y;
@@ -260,11 +261,11 @@ public class LinkedYarn implements LinkedYarnInterface {
         }
 
         public boolean hasNext () {
-            return current.next != null;
+            return index < current.count || current.next != null;
         }
 
         public boolean hasPrev () {
-            return current.prev != null;
+            return index > 0  || current.prev != null;
         }
 
         public boolean isValid () {
@@ -279,7 +280,12 @@ public class LinkedYarn implements LinkedYarnInterface {
 
             if( isValid() ) {
                 if( hasNext() ){
-                    current = current.next;
+                    if(index < current.count) {
+                        index ++;
+                    } else {
+                        current = current.next;
+                        index = 0;
+                    }
                 } else {
                     throw new NoSuchElementException();
                 }
@@ -292,7 +298,13 @@ public class LinkedYarn implements LinkedYarnInterface {
 
             if( isValid() ) {
                 if( hasPrev() ){
-                    current = current.prev;
+                    if (index > 0) {
+                        index --;
+                    }
+                    else{
+                        current = current.prev;
+                        index = 0;
+                    }
                 } else {
                     throw new NoSuchElementException();
                 }
