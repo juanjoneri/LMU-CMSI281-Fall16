@@ -1,7 +1,9 @@
 import static org.junit.Assert.*;
 
+import javafx.scene.input.InputMethodTextRun;
 import org.junit.*;
 import org.junit.rules.Timeout;
+import sun.awt.image.ImageWatched;
 
 public class LinkedYarnTests {
 
@@ -17,9 +19,34 @@ public class LinkedYarnTests {
     // Used as the basic empty LinkedYarn to test; the @Before
     // method is run before every @Test
     LinkedYarn ball;
+    LinkedYarn bola;
+    String[] words = {
+            "Ohrwurm",
+            "Fernweh",
+            "Kummerspeck",
+            "Schweinehund",
+            "Fremdschämen",
+            "Torschlusspanik",
+            "Treppenwitz",
+            "Lebensmüde",
+            "Weltschmerz",
+            "Weichei",
+            "Backpfeifengesicht",
+            "Erklärungsnot",
+            "Sitzfleisch",
+            "Purzelbaum",
+            "Dreikäsehoch",
+            "Zungenbrecher",
+            "Schattenparker",
+            "Kuddelmuddel",
+            "Kugelschreiber",
+            "Kartoffelpuffer"
+    };
+
     @Before
     public void init () {
         ball = new LinkedYarn();
+        bola = new LinkedYarn();
     }
 
 
@@ -33,6 +60,14 @@ public class LinkedYarnTests {
     public void testInit() {
         assertTrue(ball.isEmpty());
         assertEquals(0, ball.getSize());
+
+        //MY TESTS
+        assertEquals(0, ball.getUniqueSize());
+        for(String word : words){
+            assertFalse(ball.contains(word));
+            assertEquals(0, ball.count(word));
+            assertTrue(ball.getMostCommon() == null);
+        }
     }
 
     // Basic Tests
@@ -42,6 +77,18 @@ public class LinkedYarnTests {
         assertTrue(ball.isEmpty());
         ball.insert("not_empty");
         assertFalse(ball.isEmpty());
+
+        //MY TESTS
+        ball.remove("not_empty");
+        assertTrue(ball.isEmpty());
+        ball.insert("not_empty");
+        ball.removeAll("not_empty");
+        assertTrue(ball.isEmpty());
+
+        LinkedYarn.Iterator iterator = ball.getIterator();
+        assertFalse(iterator.hasNext());
+        assertFalse(iterator.hasPrev());
+        assertEquals(null, iterator.getString());
     }
 
     @Test
@@ -51,6 +98,30 @@ public class LinkedYarnTests {
         assertEquals(2, ball.getSize());
         ball.insert("unique");
         assertEquals(3, ball.getSize());
+
+        //MY TESTS
+        bola = new LinkedYarn();
+        assertEquals(0, bola.getSize());
+        for(String word : words){
+            bola.insert(word);
+        }
+        assertEquals(words.length, bola.getSize());
+
+        bola = new LinkedYarn();
+        int repetitions = 100;
+        for (int i = 0; i < repetitions; i ++) {
+            for (String word : words) {
+                bola.insert(word);
+            }
+        }
+        assertEquals(words.length * repetitions, bola.getSize());
+
+        bola = new LinkedYarn();
+        for (int i = 0; i < repetitions; i ++) {
+            bola.insert(words[(int) (Math.random()*words.length)]);
+            assertEquals(i + 1, bola.getSize());
+        }
+        assertEquals(repetitions, bola.getSize());
     }
 
     @Test
@@ -60,6 +131,32 @@ public class LinkedYarnTests {
         assertEquals(1, ball.getUniqueSize());
         ball.insert("unique");
         assertEquals(2, ball.getUniqueSize());
+
+        //MY TESTS
+        bola = new LinkedYarn();
+        assertEquals(0, bola.getUniqueSize());
+        for(String word : words){
+            bola.insert(word);
+        }
+        assertEquals(words.length, bola.getUniqueSize());
+
+        bola = new LinkedYarn();
+        int repetitions = 100;
+        for (int i = 0; i < repetitions; i ++) {
+            for (String word : words) {
+                bola.insert(word);
+            }
+        }
+        assertEquals(words.length, bola.getUniqueSize());
+
+        for (int i = 0; i < repetitions; i++ ) {
+            bola = new LinkedYarn();
+            for (int j = 0; j < repetitions; j++) {
+                bola.insert(words[(int) (Math.random() * words.length)]);
+            }
+            assertTrue(words.length >= bola.getUniqueSize());
+        }
+
     }
 
     // LinkedYarn Manipulation Tests
@@ -71,6 +168,9 @@ public class LinkedYarnTests {
         ball.insert("unique");
         assertTrue(ball.contains("dup"));
         assertTrue(ball.contains("unique"));
+
+        //MY TESTS
+        
     }
 
     @Test

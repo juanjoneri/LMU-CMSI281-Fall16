@@ -242,6 +242,7 @@ public class LinkedYarn implements LinkedYarnInterface {
         }
     }
 
+    @Override
     public String toString(){
         if(this.isEmpty()){
             return "{ }";
@@ -266,8 +267,9 @@ public class LinkedYarn implements LinkedYarnInterface {
     public class Iterator implements LinkedYarnIteratorInterface {
         LinkedYarn owner;
         Node current;
+        int itModCount;
         //index designates the position inside the node (0 being 1st occurrence)
-        int itModCount, index;
+        private int index;
 
         Iterator (LinkedYarn y) {
             owner = y;
@@ -277,11 +279,19 @@ public class LinkedYarn implements LinkedYarnInterface {
         }
 
         public boolean hasNext () {
-            return index < current.count || current.next != null;
+            if( !owner.isEmpty() ) {
+                return index < current.count || current.next != null;
+            } else {
+                return false;
+            }
         }
 
         public boolean hasPrev () {
-            return index > 1  || current.prev != null;
+            if( !owner.isEmpty() ) {
+                return index > 1 || current.prev != null;
+            } else {
+                return false;
+            }
         }
 
         public boolean isValid () {
@@ -289,7 +299,8 @@ public class LinkedYarn implements LinkedYarnInterface {
         }
 
         public String getString () {
-            return current.text;
+
+            return this.isValid() && !owner.isEmpty() ? current.text : null;
         }
 
         public void next () {
