@@ -1,5 +1,6 @@
 import static org.junit.Assert.*;
 
+import javafx.concurrent.Worker;
 import javafx.scene.input.InputMethodTextRun;
 import org.junit.*;
 import org.junit.rules.Timeout;
@@ -20,6 +21,7 @@ public class LinkedYarnTests {
     // method is run before every @Test
     LinkedYarn ball;
     LinkedYarn bola;
+    int repetitions = 100;
     String[] words = {
             "Ohrwurm",
             "Fernweh",
@@ -108,7 +110,6 @@ public class LinkedYarnTests {
         assertEquals(words.length, bola.getSize());
 
         bola = new LinkedYarn();
-        int repetitions = 100;
         for (int i = 0; i < repetitions; i ++) {
             for (String word : words) {
                 bola.insert(word);
@@ -157,6 +158,14 @@ public class LinkedYarnTests {
             assertTrue(words.length >= bola.getUniqueSize());
         }
 
+        bola = new LinkedYarn();
+        for(String word : words) {
+            for (int i = 0; i < (int) (Math.random()*repetitions); i++) {
+                bola.insert(word);
+            }
+        }
+        assertEquals(words.length, bola.getUniqueSize());
+
     }
 
     // LinkedYarn Manipulation Tests
@@ -170,7 +179,34 @@ public class LinkedYarnTests {
         assertTrue(ball.contains("unique"));
 
         //MY TESTS
-        
+        bola = new LinkedYarn();
+        for(String word : words){
+            bola.insert(word);
+            assertTrue(bola.contains(word));
+        }
+
+
+        bola = new LinkedYarn();
+        for (int i = 0; i < repetitions; i ++) {
+            for (String word : words) {
+                bola.insert(word);
+            }
+        }
+        for(String word : words){
+            assertTrue(bola.contains(word));
+            assertFalse(bola.contains(word + "!"));
+        }
+
+        bola = new LinkedYarn();
+        for (int i = 0; i < repetitions; i ++) {
+            bola.insert(words[(int) (Math.random()*words.length)]);
+        }
+        int count = 0;
+        for(String word : words) {
+            count += bola.contains(word) ? 1 : 0;
+        }
+        assertTrue(count <= words.length);
+
     }
 
     @Test
@@ -183,6 +219,33 @@ public class LinkedYarnTests {
         assertEquals(1, ball.getSize());
         assertEquals(1, ball.getUniqueSize());
         assertEquals(1, dups);
+
+        //MY TESTS
+        bola = new LinkedYarn();
+        for(String word : words){
+            bola.insert(word);
+            bola.remove(word);
+            assertFalse(bola.contains(word));
+            assertEquals(0, bola.count(word));
+            assertTrue(bola.isEmpty());
+            assertEquals(0, bola.getUniqueSize());
+            assertEquals(0, bola.getSize());
+        }
+
+        for (String word : words) {
+            bola.insert(word);
+        }
+        for (int i = 0; i < words.length; i ++) {
+            bola.remove(words[i]);
+            assertEquals(words.length - i -1, bola.getSize());
+            assertEquals(words.length - i -1, bola.getUniqueSize());
+        }
+
+        for (String word : words) {
+            bola.remove(word);
+            assertEquals(0, bola.getSize());
+            assertEquals(0, bola.getUniqueSize());
+        }
     }
 
     @Test
@@ -195,6 +258,38 @@ public class LinkedYarnTests {
         ball.removeAll("dup");
         assertEquals(1, ball.getSize());
         assertEquals(1, ball.getUniqueSize());
+
+        //MY TESTS
+        bola = new LinkedYarn();
+        for(String word : words){
+            for( int i = 0; i < repetitions; i ++) {
+                bola.insert(word);
+            }
+            bola.remove(word);
+            assertTrue(bola.contains(word));
+            assertEquals(repetitions - 1, bola.count(word));
+            assertFalse(bola.isEmpty());
+            assertEquals(1, bola.getUniqueSize());
+            assertEquals(repetitions - 1, bola.getSize());
+            bola.removeAll(word);
+            assertFalse(bola.contains(word));
+            assertEquals(0, bola.count(word));
+            assertTrue(bola.isEmpty());
+            assertEquals(0, bola.getUniqueSize());
+            assertEquals(0, bola.getSize());
+        }
+
+        for(String word : words) {
+            for (int i = 0; i < (int) (Math.random()*repetitions); i++) {
+                bola.insert(word);
+            }
+        }
+        assertEquals(words.length, bola.getUniqueSize());
+        for( int i = 0; i < repetitions; i ++ ){
+            bola.removeAll(words[(int) (Math.random()*words.length)]);
+        }
+        assertEquals(0, bola.getUniqueSize());
+        assertEquals(0, bola.getSize());
     }
 
     @Test
