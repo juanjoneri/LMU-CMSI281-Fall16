@@ -300,6 +300,24 @@ public class LinkedYarnTests {
         assertEquals(2, ball.count("dup"));
         assertEquals(1, ball.count("unique"));
         assertEquals(0, ball.count("forneymon"));
+
+        //MY TESTS - this one is nice..
+        bola = new LinkedYarn();
+        for(String word : words) {
+            assertEquals(0, bola.count(word));
+            int i = 0;
+            while (i < (int) (Math.random()*repetitions)) {
+                bola.insert(word);
+                i ++;
+            }
+            assertEquals(i, bola.count(word));
+            bola.remove(word);
+            if (i > 0) {
+                assertEquals(i - 1, bola.count(word));
+            }
+            bola.removeAll(word);
+            assertEquals(0, bola.count(word));
+        }
     }
 
     @Test
@@ -310,6 +328,26 @@ public class LinkedYarnTests {
         assertTrue(ball.contains("dup"));
         assertTrue(ball.contains("unique"));
         assertFalse(ball.contains("forneymon"));
+
+        //MY TESTS
+        bola = new LinkedYarn();
+        for (String word : words) {
+            assertFalse(bola.contains(word));
+            int i = 0;
+            while (i < (int) (Math.random() * repetitions)) {
+                bola.insert(word);
+                i++;
+            }
+            if (i > 0) {
+                assertTrue(bola.contains(word));
+            }
+            bola.remove(word);
+            if (i > 0) {
+                assertTrue(bola.contains(word));
+            }
+            bola.removeAll(word);
+            assertFalse(bola.contains(word));
+        }
     }
     // This is tested pretty much everywhere so...
 
