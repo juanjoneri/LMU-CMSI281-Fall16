@@ -147,7 +147,7 @@ public class LinkedYarn implements LinkedYarnInterface {
             return newLinkedYarn;
         }
 
-        return null;
+        return new LinkedYarn();
     }
 
     public void swap (LinkedYarn other) {
