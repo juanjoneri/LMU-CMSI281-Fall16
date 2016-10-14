@@ -204,7 +204,7 @@ public class LinkedYarn implements LinkedYarnInterface {
             }
             return tearedYarn;
         } else {
-            return y1.isEmpty() ? null : y1.clone();
+            return y1.isEmpty() ? new LinkedYarn() : y1.clone();
         }
     }
 
