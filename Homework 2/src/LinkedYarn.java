@@ -268,7 +268,7 @@ public class LinkedYarn implements LinkedYarnInterface {
         LinkedYarn owner;
         Node current;
         int itModCount;
-        //index designates the position inside the node (0 being 1st occurrence)
+        //index designates the position inside the node (1 being 1st occurrence)
         private int index;
 
         Iterator (LinkedYarn y) {
@@ -330,7 +330,7 @@ public class LinkedYarn implements LinkedYarnInterface {
                     }
                     else{
                         current = current.prev;
-                        index = 1;
+                        index = current.count;
                     }
                 } else {
                     throw new NoSuchElementException();
@@ -344,6 +344,8 @@ public class LinkedYarn implements LinkedYarnInterface {
 
             if( isValid() ) {
                 current.text = toReplaceWith;
+                itModCount ++;
+                owner.modCount ++;
             } else {
                 throw new IllegalStateException();
             }
