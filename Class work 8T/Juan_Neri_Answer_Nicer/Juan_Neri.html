@@ -1,0 +1,79 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimal-ui">
+    <title>Classwork 1T</title>
+    <link type="text/css" rel="stylesheet" href="assets/css/github-markdown.css">
+    <link type="text/css" rel="stylesheet" href="assets/css/pilcrow.css">
+    <link type="text/css" rel="stylesheet" href="assets/css/hljs-github.min.css"/>
+  </head>
+  <body>
+    <article class="markdown-body"><h1 id="classwork-1t"><a class="header-link" href="#classwork-1t"></a>Classwork 1T</h1>
+<h2 id="main-method"><a class="header-link" href="#main-method"></a>Main Method</h2>
+<pre class="hljs"><code><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> main (String[] args) {
+
+      Scanner input = <span class="hljs-keyword">new</span> Scanner(System.in);                <span class="hljs-comment">// ┒</span>
+      System.out.<span class="hljs-keyword">println</span>(<span class="hljs-string">"Enter a sentence."</span>);               <span class="hljs-comment">// │ C1</span>
+      String[] words = input.nextLine().split(<span class="hljs-string">" "</span>);          <span class="hljs-comment">// │</span>
+      <span class="hljs-keyword">int</span> <span class="hljs-keyword">count</span> = <span class="hljs-number">0</span>;                                         <span class="hljs-comment">// ┚</span>
+
+      <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; words.length; i++) {               <span class="hljs-comment">// │ C2             ┒</span>
+          <span class="hljs-keyword">boolean</span> unique = <span class="hljs-keyword">true</span>;                             <span class="hljs-comment">// │ C3             │ #n</span>
+          <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; words.length; j++) {           <span class="hljs-comment">// │ C4    ┒        │</span>
+              <span class="hljs-keyword">if</span> (words[i].equals(words[j]) &amp;&amp; i != j) {     <span class="hljs-comment">// ┒       │ #n     │</span>
+                  unique = <span class="hljs-keyword">false</span>;                            <span class="hljs-comment">// │ C5    │        │</span>
+                  <span class="hljs-keyword">break</span>;                                     <span class="hljs-comment">// ┚       ┚        │</span>
+              }                                                                  │
+          }                                                                      │
+          <span class="hljs-keyword">if</span> (unique) {<span class="hljs-keyword">count</span>++;}                             <span class="hljs-comment">// │ C6             ┚</span>
+      }
+      System.out.<span class="hljs-keyword">println</span>(<span class="hljs-keyword">count</span>);                             <span class="hljs-comment">// │ C7</span>
+}</code></pre><h3 id="answer"><a class="header-link" href="#answer"></a>Answer</h3>
+<p> <em>T(n) = C1 + n[ C2 + C3 + n( C4 + C5 ) + C6 ] + C7</em><br/>
+ <strong>O(N^2)</strong></p>
+<h1 id="classwork-3r"><a class="header-link" href="#classwork-3r"></a>Classwork 3R</h1>
+<h2 id="getat-method"><a class="header-link" href="#getat-method"></a>getAt Method</h2>
+<pre class="hljs"><code><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> getAt(<span class="hljs-keyword">int</span> <span class="hljs-keyword">index</span>) {
+   <span class="hljs-keyword">return</span> items[<span class="hljs-keyword">index</span>];     <span class="hljs-comment">// │ C1</span>
+}</code></pre><h3 id="answer-1"><a class="header-link" href="#answer-1"></a>Answer</h3>
+<p> <em>T(n) = C1</em><br/>
+ <strong>O(1)</strong></p>
+<h2 id="checkandgrow-method"><a class="header-link" href="#checkandgrow-method"></a>checkAndGrow Method</h2>
+<pre class="hljs"><code><span class="hljs-keyword">private</span> void checkAndGrow () {
+
+    <span class="hljs-keyword">if</span> (size &lt; <span class="hljs-keyword">items</span>.<span class="hljs-built_in">length</span>) { <span class="hljs-literal">return</span>; }               <span class="hljs-comment"> // │ C1</span>
+    int[] newItems = <span class="hljs-built_in">new</span> int[<span class="hljs-keyword">items</span>.<span class="hljs-built_in">length</span> * <span class="hljs-number">2</span>];        <span class="hljs-comment"> // │ C2</span>
+
+    <span class="hljs-keyword">for</span> (int i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-keyword">items</span>.<span class="hljs-built_in">length</span>; i++) {           <span class="hljs-comment"> // │ C3     ┒ #n ( this code only executes if</span>
+        newItems[i] = <span class="hljs-keyword">items</span>[i];                        <span class="hljs-comment"> // │ C4     ┚         items.length == size )</span>
+    }
+
+    <span class="hljs-keyword">items</span> = newItems;                                  <span class="hljs-comment"> // │ C5</span>
+}</code></pre><h3 id="answer-2"><a class="header-link" href="#answer-2"></a>Answer</h3>
+<p> <em>T(n) = C1 + C2 + n( C3 + C4 ) + C5 or T(n) = C1</em><br/>
+ In either case, the function has asymptotic upper bound given by<br/>
+ <strong>O(n)</strong></p>
+<h2 id="shiftright-method"><a class="header-link" href="#shiftright-method"></a>shiftRight Method</h2>
+<pre class="hljs"><code><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> shiftRight (<span class="hljs-keyword">int</span> <span class="hljs-keyword">index</span>) {
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = size; i &gt; <span class="hljs-keyword">index</span>; i--) {            <span class="hljs-comment">// │ C1   ┒ #n</span>
+        items[i] = items[i<span class="hljs-number">-1</span>];                      <span class="hljs-comment">// │ C2   ┚</span>
+    }
+
+}</code></pre><h3 id="answer-3"><a class="header-link" href="#answer-3"></a>Answer</h3>
+<p> <em>T(n) = n( C1 + C2 )</em><br/>
+ <strong>O(n)</strong></p>
+<h2 id="insertat-method"><a class="header-link" href="#insertat-method"></a>insertAt Method</h2>
+<pre class="hljs"><code><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> insertAt(<span class="hljs-keyword">int</span> toAdd, <span class="hljs-keyword">int</span> <span class="hljs-keyword">index</span>) {
+
+    size++;                     <span class="hljs-comment">// │ C0</span>
+    checkAndGrow();             <span class="hljs-comment">// │ C1 + C2 + n( C3 + C4 ) + C5</span>
+    shiftRight(<span class="hljs-keyword">index</span>);          <span class="hljs-comment">// │ n( C6 + C7 )</span>
+    items[<span class="hljs-keyword">index</span>] = toAdd;       <span class="hljs-comment">// │ C8</span>
+}</code></pre><h3 id="answer-4"><a class="header-link" href="#answer-4"></a>Answer</h3>
+<p> <em>T(n) = C0 + C1 + C2 + n( C3 + C4 ) + C5 + n( C6 + C7 ) + C8</em><br/>
+ <strong>O(n)</strong></p>
+    </article>
+  </body>
+</html>
