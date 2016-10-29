@@ -86,10 +86,81 @@
  **O(n)**
 
  ## Problem 2
- >  For each of the following methods, provide the worst case Big-O asymptotic runtime complexities as a function of: s = **the size of the Yarn** (i.e., the number of individual String occurrences), OR **u = the uniqueSize of the LinkedYarn** (i.e., the number of distinct Strings). Show your work.
+ >  For each of the following methods, provide the worst case Big-O asymptotic runtime complexities as a function of: **s = the size of the Yarn** (i.e., the number of individual String occurrences), OR **u = the uniqueSize of the LinkedYarn** (i.e., the number of distinct Strings). Show your work.
  > 1. swap()
  > 2. insert()
 
 ### swap()
 
+    public void swap (LinkedYarn other) {
+        Node tempHead = head;                                     // ┒
+        int tempSize = size,                                      // |
+            tempUniqueSize = uniqueSize;                          // |
+                                                                  // |
+        head = other.head;                                        // |
+        size = other.size;                                        // |
+        uniqueSize = other.uniqueSize;                            // | C1
+                                                                  // |
+        other.head = tempHead;                                    // |
+        other.size = tempSize;                                    // |
+        other.uniqueSize = tempUniqueSize;                        // |
+        modCount++;                                               // |
+        other.modCount++;                                         // ┚
+    }
+
+*T(s, u) = C1*
+#### Answer
+ **O(1)**
+
 ### insert()
+
+    private Node find (String toFind) {
+        Node curr = head;                                         // | C1
+        for (; curr != null; curr = curr.next) {                  // | C2  ┒
+            if (curr.text.equals(toFind)) {                       // ┒     | #u
+                break;                                            // | C3  ┚
+            }                                                     // ┚
+        }
+        return curr;                                              // | C4
+    }
+
+*T(s, u) = (C2 + C3)u + C1 + C4*
+
+    private void prependNode (Node n) {
+        Node oldHead = head;                                      // | C5
+        head = n;                                                 // | C6
+        if (oldHead != null) {                                    // ┒
+            head.next = oldHead;                                  // | C7
+            oldHead.prev = head;                                  // |
+        }                                                         // ┚
+    }
+
+*T(s, u) = C5 + C6 + C7*
+
+    private boolean insertOccurrences (String text, int count) {
+        Node found = find(text);                                  // | (C2 + C3)u + C1 + C4
+
+        // Case: new string, so add new Node
+        if (found == null) {                                      // | C8            ┒
+            prependNode(new Node(text, count));                   // | C5 + C6 + C7  | C5 + C6 + C7 + C8 + C9
+            uniqueSize++;                                         // | C9            ┚
+
+        // Case: existing string, so update count
+        } else {
+            found.count += count;                                 // | C10
+        }
+        size += count;                                            // ┒ C11
+        modCount++;                                               // ┚
+
+        return true;                                              // | C12
+    }
+
+*T(s, u) = (C2 + C3)u + C1 + C4 + C5 + C6 + C7 + C8 + C9 + C10 + C11 + C12*
+
+    public void insert (String toAdd) {
+        insertOccurrences(toAdd, 1);           // | (C2 + C3)u + C1 + C4 + C5 + C6 + C7 + C8 + C9 + C10 + C11 + C12
+    }
+
+*T(s, u) = (C2 + C3)u + C1 + C4 + C5 + C6 + C7 + C8 + C9 + C10 + C11 + C12*
+#### Answer
+ **O(n)**
