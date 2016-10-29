@@ -14,7 +14,7 @@
                 return i;                                          // ┚
             }
         }
-        return -1;                                                 // │ C2 
+        return -1;                                                 // │ C2
     }
 
 *T(s, u) = (C1)u + C2*
@@ -84,3 +84,12 @@
 *T(s, u) = (C3)s + (C1 + C2 + C4)*
 #### Answer
  **O(n)**
+
+ ## Problem 2
+ >  For each of the following methods, provide the worst case Big-O asymptotic runtime complexities as a function of: s = **the size of the Yarn** (i.e., the number of individual String occurrences), OR **u = the uniqueSize of the LinkedYarn** (i.e., the number of distinct Strings). Show your work.
+ > 1. swap()
+ > 2. insert()
+
+### swap()
+
+### insert()
