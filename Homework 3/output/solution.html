@@ -26,7 +26,7 @@
             <span class="hljs-built_in">return</span> i;                                          <span class="hljs-comment">// ┚</span>
         }
     }
-    <span class="hljs-built_in">return</span> <span class="hljs-number">-1</span>;                                                 <span class="hljs-comment">// │ C2 </span>
+    <span class="hljs-built_in">return</span> <span class="hljs-number">-1</span>;                                                 <span class="hljs-comment">// │ C2</span>
 }</code></pre><p><em>T(s, u) = (C1)u + C2</em></p>
 <pre class="hljs"><code><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> replaceFromBack (<span class="hljs-keyword">int</span> <span class="hljs-keyword">index</span>) {
     items[<span class="hljs-keyword">index</span>] = items[uniqueSize<span class="hljs-number">-1</span>];                        <span class="hljs-comment">// ┒ C3</span>
@@ -81,6 +81,72 @@
     <span class="hljs-keyword">return</span> currentEntry.text;                                  <span class="hljs-comment">// │ C4</span>
 }</code></pre><p><em>T(s, u) = (C3)s + (C1 + C2 + C4)</em></p>
 <h4 id="answer-1"><a class="header-link" href="#answer-1"></a>Answer</h4>
+<p> <strong>O(n)</strong></p>
+<h2 id="problem-2"><a class="header-link" href="#problem-2"></a>Problem 2</h2>
+<blockquote>
+<p> For each of the following methods, provide the worst case Big-O asymptotic runtime complexities as a function of: <strong>s = the size of the Yarn</strong> (i.e., the number of individual String occurrences), OR <strong>u = the uniqueSize of the LinkedYarn</strong> (i.e., the number of distinct Strings). Show your work.</p>
+<ol class="list">
+<li>swap()</li>
+<li>insert()</li>
+</ol>
+</blockquote>
+<h3 id="swap-"><a class="header-link" href="#swap-"></a>swap()</h3>
+<pre class="hljs"><code><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> swap (LinkedYarn other) {
+    Node tempHead = head;                                     <span class="hljs-comment">// ┒</span>
+    <span class="hljs-keyword">int</span> tempSize = <span class="hljs-built_in">size</span>,                                      <span class="hljs-comment">// |</span>
+        tempUniqueSize = uniqueSize;                          <span class="hljs-comment">// |</span>
+                                                              <span class="hljs-comment">// |</span>
+    head = other.head;                                        <span class="hljs-comment">// |</span>
+    <span class="hljs-built_in">size</span> = other.<span class="hljs-built_in">size</span>;                                        <span class="hljs-comment">// |</span>
+    uniqueSize = other.uniqueSize;                            <span class="hljs-comment">// | C1</span>
+                                                              <span class="hljs-comment">// |</span>
+    other.head = tempHead;                                    <span class="hljs-comment">// |</span>
+    other.<span class="hljs-built_in">size</span> = tempSize;                                    <span class="hljs-comment">// |</span>
+    other.uniqueSize = tempUniqueSize;                        <span class="hljs-comment">// |</span>
+    modCount++;                                               <span class="hljs-comment">// |</span>
+    other.modCount++;                                         <span class="hljs-comment">// ┚</span>
+}</code></pre><p><em>T(s, u) = C1</em></p>
+<h4 id="answer-2"><a class="header-link" href="#answer-2"></a>Answer</h4>
+<p> <strong>O(1)</strong></p>
+<h3 id="insert-"><a class="header-link" href="#insert-"></a>insert()</h3>
+<pre class="hljs"><code><span class="hljs-keyword">private</span> Node <span class="hljs-built_in">find</span> (<span class="hljs-keyword">String</span> toFind) {
+    Node curr = head;                                         <span class="hljs-comment">// | C1</span>
+    <span class="hljs-built_in">for</span> (; curr != null; curr = curr.next) {                  <span class="hljs-comment">// | C2  ┒</span>
+        <span class="hljs-built_in">if</span> (curr.<span class="hljs-built_in">text</span>.equals(toFind)) {                       <span class="hljs-comment">// ┒     | #u</span>
+            <span class="hljs-built_in">break</span>;                                            <span class="hljs-comment">// | C3  ┚</span>
+        }                                                     <span class="hljs-comment">// ┚</span>
+    }
+    <span class="hljs-built_in">return</span> curr;                                              <span class="hljs-comment">// | C4</span>
+}</code></pre><p><em>T(s, u) = (C2 + C3)u + C1 + C4</em></p>
+<pre class="hljs"><code><span class="hljs-keyword">private</span> <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">prependNode</span> <span class="hljs-params">(Node n)</span> </span>{
+    Node oldHead = head;                                      <span class="hljs-comment">// | C5</span>
+    head = n;                                                 <span class="hljs-comment">// | C6</span>
+    <span class="hljs-keyword">if</span> (oldHead != <span class="hljs-keyword">null</span>) {                                    <span class="hljs-comment">// ┒</span>
+        head.next = oldHead;                                  <span class="hljs-comment">// | C7</span>
+        oldHead.prev = head;                                  <span class="hljs-comment">// |</span>
+    }                                                         <span class="hljs-comment">// ┚</span>
+}</code></pre><p><em>T(s, u) = C5 + C6 + C7</em></p>
+<pre class="hljs"><code><span class="hljs-keyword">private</span> <span class="hljs-keyword">boolean</span> insertOccurrences (String text, <span class="hljs-keyword">int</span> <span class="hljs-keyword">count</span>) {
+    Node found = <span class="hljs-keyword">find</span>(text);                                  <span class="hljs-comment">// | (C2 + C3)u + C1 + C4</span>
+
+    <span class="hljs-comment">// Case: new string, so add new Node</span>
+    <span class="hljs-keyword">if</span> (found == <span class="hljs-keyword">null</span>) {                                      <span class="hljs-comment">// | C8            ┒</span>
+        prependNode(<span class="hljs-keyword">new</span> Node(text, <span class="hljs-keyword">count</span>));                   <span class="hljs-comment">// | C5 + C6 + C7  | C5 + C6 + C7 + C8 + C9</span>
+        uniqueSize++;                                         <span class="hljs-comment">// | C9            ┚</span>
+
+    <span class="hljs-comment">// Case: existing string, so update count</span>
+    } <span class="hljs-keyword">else</span> {
+        found.<span class="hljs-keyword">count</span> += <span class="hljs-keyword">count</span>;                                 <span class="hljs-comment">// | C10</span>
+    }
+    <span class="hljs-keyword">size</span> += <span class="hljs-keyword">count</span>;                                            <span class="hljs-comment">// ┒ C11</span>
+    modCount++;                                               <span class="hljs-comment">// ┚</span>
+
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;                                              <span class="hljs-comment">// | C12</span>
+}</code></pre><p><em>T(s, u) = (C2 + C3)u + C1 + C4 + C5 + C6 + C7 + C8 + C9 + C10 + C11 + C12</em></p>
+<pre class="hljs"><code><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> insert (<span class="hljs-keyword">String</span> toAdd) {
+    insertOccurrences(toAdd, <span class="hljs-number">1</span>);           <span class="hljs-comment">// | (C2 + C3)u + C1 + C4 + C5 + C6 + C7 + C8 + C9 + C10 + C11 + C12</span>
+}</code></pre><p><em>T(s, u) = (C2 + C3)u + C1 + C4 + C5 + C6 + C7 + C8 + C9 + C10 + C11 + C12</em></p>
+<h4 id="answer-3"><a class="header-link" href="#answer-3"></a>Answer</h4>
 <p> <strong>O(n)</strong></p>
     </article>
   </body>

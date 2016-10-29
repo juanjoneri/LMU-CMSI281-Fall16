@@ -64,7 +64,7 @@
 ### getNth()
 
     public String getNth (int n) {
-        if (n >= size || n < 0) {                                  // ┒
+        if (n >= size ││ n < 0) {                                  // ┒
             throw new IllegalArgumentException();                  // │ C1
         }                                                          // ┚
 
@@ -94,17 +94,17 @@
 
     public void swap (LinkedYarn other) {
         Node tempHead = head;                                     // ┒
-        int tempSize = size,                                      // |
-            tempUniqueSize = uniqueSize;                          // |
-                                                                  // |
-        head = other.head;                                        // |
-        size = other.size;                                        // |
-        uniqueSize = other.uniqueSize;                            // | C1
-                                                                  // |
-        other.head = tempHead;                                    // |
-        other.size = tempSize;                                    // |
-        other.uniqueSize = tempUniqueSize;                        // |
-        modCount++;                                               // |
+        int tempSize = size,                                      // │
+            tempUniqueSize = uniqueSize;                          // │
+                                                                  // │
+        head = other.head;                                        // │
+        size = other.size;                                        // │
+        uniqueSize = other.uniqueSize;                            // │ C1
+                                                                  // │
+        other.head = tempHead;                                    // │
+        other.size = tempSize;                                    // │
+        other.uniqueSize = tempUniqueSize;                        // │
+        modCount++;                                               // │
         other.modCount++;                                         // ┚
     }
 
@@ -115,50 +115,50 @@
 ### insert()
 
     private Node find (String toFind) {
-        Node curr = head;                                         // | C1
-        for (; curr != null; curr = curr.next) {                  // | C2  ┒
-            if (curr.text.equals(toFind)) {                       // ┒     | #u
-                break;                                            // | C3  ┚
+        Node curr = head;                                         // │ C1
+        for (; curr != null; curr = curr.next) {                  // │ C2  ┒
+            if (curr.text.equals(toFind)) {                       // ┒     │ #u
+                break;                                            // │ C3  ┚
             }                                                     // ┚
         }
-        return curr;                                              // | C4
+        return curr;                                              // │ C4
     }
 
 *T(s, u) = (C2 + C3)u + C1 + C4*
 
     private void prependNode (Node n) {
-        Node oldHead = head;                                      // | C5
-        head = n;                                                 // | C6
+        Node oldHead = head;                                      // │ C5
+        head = n;                                                 // │ C6
         if (oldHead != null) {                                    // ┒
-            head.next = oldHead;                                  // | C7
-            oldHead.prev = head;                                  // |
+            head.next = oldHead;                                  // │ C7
+            oldHead.prev = head;                                  // │
         }                                                         // ┚
     }
 
 *T(s, u) = C5 + C6 + C7*
 
     private boolean insertOccurrences (String text, int count) {
-        Node found = find(text);                                  // | (C2 + C3)u + C1 + C4
+        Node found = find(text);                                  // │ (C2 + C3)u + C1 + C4
 
         // Case: new string, so add new Node
-        if (found == null) {                                      // | C8            ┒
-            prependNode(new Node(text, count));                   // | C5 + C6 + C7  | C5 + C6 + C7 + C8 + C9
-            uniqueSize++;                                         // | C9            ┚
+        if (found == null) {                                      // │ C8            ┒
+            prependNode(new Node(text, count));                   // │ C5 + C6 + C7  │ C5 + C6 + C7 + C8 + C9
+            uniqueSize++;                                         // │ C9            ┚
 
         // Case: existing string, so update count
         } else {
-            found.count += count;                                 // | C10
+            found.count += count;                                 // │ C10
         }
         size += count;                                            // ┒ C11
         modCount++;                                               // ┚
 
-        return true;                                              // | C12
+        return true;                                              // │ C12
     }
 
 *T(s, u) = (C2 + C3)u + C1 + C4 + C5 + C6 + C7 + C8 + C9 + C10 + C11 + C12*
 
     public void insert (String toAdd) {
-        insertOccurrences(toAdd, 1);           // | (C2 + C3)u + C1 + C4 + C5 + C6 + C7 + C8 + C9 + C10 + C11 + C12
+        insertOccurrences(toAdd, 1);           // │ (C2 + C3)u + C1 + C4 + C5 + C6 + C7 + C8 + C9 + C10 + C11 + C12
     }
 
 *T(s, u) = (C2 + C3)u + C1 + C4 + C5 + C6 + C7 + C8 + C9 + C10 + C11 + C12*
