@@ -175,12 +175,12 @@
 
     private void prependNode (Node n) { }
 
-*See problem 2 for solution*
+*See problem 2 for solution*<br/>
 *T(s, u)  = C5 + C6 + C7*
 
     private boolean insertOccurrences (String text, int count) { }
 
-*See problem 2 for solution, including dependencies*
+*See problem 2 for solution, including dependencies*<br/>
 *T(s, u)  = (C2 + C3)u + C1 + C4 + C5 + C6 + C7 + C8 + C9 + C10 + C11 + C12*
 
     public LinkedYarn clone () {
@@ -204,6 +204,6 @@
     }
 
 *T(s1, s2, u1, u2) = (C5 + C6 + C7 + C14 + C15)u1 + C13 + [ (C2 + C3)u1 + C1 + C4 + C5 + C6 + C7 + C8 + C9 + C10 + C11 + C12 + C16 ]u2 + C17*<br/>
-*T(s1, s2, u1, u2) = (C2 + C3)u1u2 + (C5 + C6 + C7 + C14 + C15)u1 + (C1 + C4 + C5 + C6 + C7 + C8 + C9 + C10 + C11 + C12 + C16)u + C13 + C17*
+*T(s1, s2, u1, u2) = (C2 + C3)u1u2 + (C5 + C6 + C7 + C14 + C15)u1 + (C1 + C4 + C5 + C6 + C7 + C8 + C9 + C10 + C11 + C12 + C16)u2 + C13 + C17*
 #### Answer
  **O(u1*u2)**
