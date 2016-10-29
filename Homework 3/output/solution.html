@@ -20,66 +20,66 @@
 </ol>
 </blockquote>
 <h3 id="removeall-"><a class="header-link" href="#removeall-"></a>removeAll()</h3>
-<pre class="hljs"><code><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> **<span class="hljs-built_in">find</span>** (<span class="hljs-keyword">String</span> s) {
+<pre class="hljs"><code><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> <span class="hljs-built_in">find</span> (<span class="hljs-keyword">String</span> s) {
     <span class="hljs-built_in">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; uniqueSize; i++) {                     <span class="hljs-comment">// ┒</span>
-        <span class="hljs-built_in">if</span> (items[i].<span class="hljs-built_in">text</span>.equals(s)) {                         <span class="hljs-comment">// | C1  ┒</span>
-            <span class="hljs-built_in">return</span> i;                                          <span class="hljs-comment">// ┚     |</span>
-        }                                                               | <span class="hljs-meta">#u</span>
-    }                                                                   |
-    <span class="hljs-built_in">return</span> <span class="hljs-number">-1</span>;                                                 <span class="hljs-comment">// | C2  ┚</span>
-}</code></pre><p><em>T(s, u) = (C1 + C2)u</em></p>
-<pre class="hljs"><code><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> **replaceFromBack** (<span class="hljs-keyword">int</span> <span class="hljs-keyword">index</span>) {
+        <span class="hljs-built_in">if</span> (items[i].<span class="hljs-built_in">text</span>.equals(s)) {                         <span class="hljs-comment">// │ C1  │ #u</span>
+            <span class="hljs-built_in">return</span> i;                                          <span class="hljs-comment">// ┚</span>
+        }
+    }
+    <span class="hljs-built_in">return</span> <span class="hljs-number">-1</span>;                                                 <span class="hljs-comment">// │ C2 </span>
+}</code></pre><p><em>T(s, u) = (C1)u + C2</em></p>
+<pre class="hljs"><code><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> replaceFromBack (<span class="hljs-keyword">int</span> <span class="hljs-keyword">index</span>) {
     items[<span class="hljs-keyword">index</span>] = items[uniqueSize<span class="hljs-number">-1</span>];                        <span class="hljs-comment">// ┒ C3</span>
     items[uniqueSize<span class="hljs-number">-1</span>] = <span class="hljs-keyword">null</span>;                                <span class="hljs-comment">// ┚</span>
 }</code></pre><p><em>T(s, u) = C3</em></p>
-<pre class="hljs"><code><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> **removeOccurrences** (String text, <span class="hljs-keyword">int</span> <span class="hljs-keyword">count</span>) {
-    <span class="hljs-keyword">int</span> <span class="hljs-keyword">index</span> = find(text);                                    <span class="hljs-comment">// | (C1 + C2)u</span>
+<pre class="hljs"><code><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> removeOccurrences (String text, <span class="hljs-keyword">int</span> <span class="hljs-keyword">count</span>) {
+    <span class="hljs-keyword">int</span> <span class="hljs-keyword">index</span> = find(text);                                    <span class="hljs-comment">// │ (C1)u + C2</span>
 
-    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">index</span> == <span class="hljs-number">-1</span>) { <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>; }                             <span class="hljs-comment">// | C4</span>
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">index</span> == <span class="hljs-number">-1</span>) { <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>; }                             <span class="hljs-comment">// │ C4</span>
 
     Entry found = items[<span class="hljs-keyword">index</span>];                                <span class="hljs-comment">// ┒ C5</span>
     <span class="hljs-keyword">int</span> newCount = found.<span class="hljs-keyword">count</span> - <span class="hljs-keyword">count</span>;                        <span class="hljs-comment">// ┚</span>
 
     <span class="hljs-comment">// Case: last instance to remove</span>
     <span class="hljs-keyword">if</span> (newCount &lt;= <span class="hljs-number">0</span>) {                                       <span class="hljs-comment">// ┒</span>
-        replaceFromBack(<span class="hljs-keyword">index</span>);                                <span class="hljs-comment">// | C3 + C6</span>
-        size -= found.<span class="hljs-keyword">count</span>;                                   <span class="hljs-comment">// |</span>
-        uniqueSize--;                                          <span class="hljs-comment">// |</span>
+        replaceFromBack(<span class="hljs-keyword">index</span>);                                <span class="hljs-comment">// │ C3 + C6</span>
+        size -= found.<span class="hljs-keyword">count</span>;                                   <span class="hljs-comment">// │</span>
+        uniqueSize--;                                          <span class="hljs-comment">// │</span>
         <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;                                              <span class="hljs-comment">// ┚</span>
 
     <span class="hljs-comment">// Case: more than 1 entry left</span>
     } <span class="hljs-keyword">else</span> {                                                   <span class="hljs-comment">// ┒</span>
-        found.<span class="hljs-keyword">count</span> = newCount;                                <span class="hljs-comment">// | C7</span>
-        size -= <span class="hljs-keyword">count</span>;                                         <span class="hljs-comment">// |</span>
+        found.<span class="hljs-keyword">count</span> = newCount;                                <span class="hljs-comment">// │ C7</span>
+        size -= <span class="hljs-keyword">count</span>;                                         <span class="hljs-comment">// │</span>
         <span class="hljs-keyword">return</span> newCount;                                       <span class="hljs-comment">// ┚</span>
     }
-}</code></pre><p><em>T(s, u) = (C1 + C2)u + (C3 + C4 + C5 + C6 + C7)</em></p>
-<pre class="hljs"><code><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> **removeAll** (String toNuke) {
-    <span class="hljs-keyword">int</span> <span class="hljs-keyword">index</span> = find(toNuke);                                  <span class="hljs-comment">// | (C1 + C2)u</span>
-    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">index</span> != <span class="hljs-number">-1</span>) {                                         <span class="hljs-comment">// | C8</span>
-        removeOccurrences(toNuke, items[<span class="hljs-keyword">index</span>].<span class="hljs-keyword">count</span>);         <span class="hljs-comment">// ┒ (C1 + C2)u + (C3 + C4 + C5 + C6 + C7)</span>
+}</code></pre><p><em>T(s, u) = (C1)u + (C2 + C3 + C4 + C5 + C6 + C7)</em></p>
+<pre class="hljs"><code><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> removeAll (String toNuke) {
+    <span class="hljs-keyword">int</span> <span class="hljs-keyword">index</span> = find(toNuke);                                  <span class="hljs-comment">// │ (C1)u + C2</span>
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">index</span> != <span class="hljs-number">-1</span>) {                                         <span class="hljs-comment">// │ C8</span>
+        removeOccurrences(toNuke, items[<span class="hljs-keyword">index</span>].<span class="hljs-keyword">count</span>);         <span class="hljs-comment">// ┒ (C1)u + (C2 + C3 + C4 + C5 + C6 + C7)</span>
     }                                                          <span class="hljs-comment">// ┚</span>
-}</code></pre><p><em>T(s, u) = (C1 + C2)u + C8 + [ (C1 + C2)u + (C3 + C4 + C5 + C6 + C7) ]</em></p>
+}</code></pre><p><em>T(s, u) = (C1)u + C2 + C8 + [ (C1)u + (C2 + C3 + C4 + C5 + C6 + C7) ]</em></p>
 <h4 id="answer"><a class="header-link" href="#answer"></a>Answer</h4>
 <p> <strong>O(n)</strong></p>
 <h3 id="getnth-"><a class="header-link" href="#getnth-"></a>getNth()</h3>
 <pre class="hljs"><code><span class="hljs-keyword">public</span> String getNth (<span class="hljs-keyword">int</span> n) {
     <span class="hljs-keyword">if</span> (n &gt;= size || n &lt; <span class="hljs-number">0</span>) {                                  <span class="hljs-comment">// ┒</span>
-        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> IllegalArgumentException();                  <span class="hljs-comment">// | C1</span>
+        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> IllegalArgumentException();                  <span class="hljs-comment">// │ C1</span>
     }                                                          <span class="hljs-comment">// ┚</span>
 
     <span class="hljs-keyword">int</span> <span class="hljs-keyword">index</span> = <span class="hljs-number">0</span>,                                             <span class="hljs-comment">// ┒</span>
-        i = <span class="hljs-number">0</span>;                                                 <span class="hljs-comment">// | C2</span>
+        i = <span class="hljs-number">0</span>;                                                 <span class="hljs-comment">// │ C2</span>
     Entry currentEntry;                                        <span class="hljs-comment">// ┚</span>
 
     do {
         currentEntry = items[i];                               <span class="hljs-comment">// ┒</span>
-        <span class="hljs-keyword">index</span> += currentEntry.<span class="hljs-keyword">count</span>;                           <span class="hljs-comment">// | C3  // ┒</span>
-        i++;                                                   <span class="hljs-comment">// ┚     // | #s</span>
+        <span class="hljs-keyword">index</span> += currentEntry.<span class="hljs-keyword">count</span>;                           <span class="hljs-comment">// │ C3  // ┒</span>
+        i++;                                                   <span class="hljs-comment">// ┚     // │ #s</span>
     } <span class="hljs-keyword">while</span> (<span class="hljs-keyword">index</span> &lt;= n);                                               <span class="hljs-comment">// ┚</span>
 
-    <span class="hljs-keyword">return</span> currentEntry.text;                                  <span class="hljs-comment">// | C4</span>
-}</code></pre><p><em>T(s, u) = (C3)u + (C1 + C2 + C4)</em></p>
+    <span class="hljs-keyword">return</span> currentEntry.text;                                  <span class="hljs-comment">// │ C4</span>
+}</code></pre><p><em>T(s, u) = (C3)s + (C1 + C2 + C4)</em></p>
 <h4 id="answer-1"><a class="header-link" href="#answer-1"></a>Answer</h4>
 <p> <strong>O(n)</strong></p>
     </article>
