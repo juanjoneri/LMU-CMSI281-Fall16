@@ -8,4 +8,4 @@
 
 
 
-**Visit the [class Website](https://www.google.com) to learn more.**
+**Visit the class [Website](http://forns.lmu.build/classes/fall-2016/cmsi-281/cmsi-281.html) to learn more.**
