@@ -184,9 +184,9 @@
 *T(s, u)  = (C2 + C3)u + C1 + C4 + C5 + C6 + C7 + C8 + C9 + C10 + C11 + C12*
 
     public LinkedYarn clone () {
-        LinkedYarn dolly = new LinkedYarn();                      // | C13
-        for (Node n = head; n != null; n = n.next) {              // | C14           ┒
-            dolly.prependNode(new Node(n.text, n.count));         // | C5 + C6 + C7  | #u
+        LinkedYarn dolly = new LinkedYarn();                      // │ C13
+        for (Node n = head; n != null; n = n.next) {              // │ C14           ┒
+            dolly.prependNode(new Node(n.text, n.count));         // │ C5 + C6 + C7  │ #u
             dolly.size += n.count;                                // ┒ C15           ┚
             dolly.uniqueSize++;                                   // ┚
         }
@@ -196,11 +196,11 @@
 *T(s, u) = (C5 + C6 + C7 + C14 + C15)u + C13*
 
     public static LinkedYarn knit (LinkedYarn y1, LinkedYarn y2) {
-        LinkedYarn result = y1.clone();                           // | (C5 + C6 + C7 + C14 + C15)u1 + C13
-        for (Node n = y2.head; n != null; n = n.next) {           // | C16                                                               ┒ #u2
-            result.insertOccurrences(n.text, n.count);            // | (C2 + C3)u1 + C1 + C4 + C5 + C6 + C7 + C8 + C9 + C10 + C11 + C12  ┚
+        LinkedYarn result = y1.clone();                           // │ (C5 + C6 + C7 + C14 + C15)u1 + C13
+        for (Node n = y2.head; n != null; n = n.next) {           // │ C16                                                               ┒ #u2
+            result.insertOccurrences(n.text, n.count);            // │ (C2 + C3)u1 + C1 + C4 + C5 + C6 + C7 + C8 + C9 + C10 + C11 + C12  ┚
         }
-        return result;                                            // | C17
+        return result;                                            // │ C17
     }
 
 *T(s1, s2, u1, u2) = (C5 + C6 + C7 + C14 + C15)u1 + C13 + [ (C2 + C3)u1 + C1 + C4 + C5 + C6 + C7 + C8 + C9 + C10 + C11 + C12 + C16 ]u2 + C17*
