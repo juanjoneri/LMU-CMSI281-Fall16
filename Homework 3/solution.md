@@ -207,3 +207,108 @@
 *T(s1, s2, u1, u2) = (C2 + C3)u1u2 + (C5 + C6 + C7 + C14 + C15)u1 + (C1 + C4 + C5 + C6 + C7 + C8 + C9 + C10 + C11 + C12 + C16)u2 + C13 + C17*
 #### Answer
  **O(u1*u2)**
+
+### commonThreads()
+
+    public LinkedYarn clone () {  }
+
+*See problem 2 for solution, including dependencies*<br/>
+*T(s, u) = (C5 + C6 + C7 + C14 + C15)u + C13*
+
+    Iterator (LinkedYarn y) {
+        owner = y;                                                // ┒
+        itModCount = y.modCount;                                  // | B1
+        current = y.head;                                         // |
+        onCount = 0;                                              // ┚
+    }
+
+*T(s, u) = B1*
+
+    public LinkedYarn.Iterator getIterator () {
+        if (isEmpty()) {                                          // ┒
+            throw new IllegalStateException();                    // | B2
+        }                                                         // ┚
+        return new LinkedYarn.Iterator(this);                     // | B1
+    }
+
+*T(s, u) = B1 + B2*
+
+    public boolean hasNext () {
+        if (current.count > onCount+1) {return true;}             // ┒ B3
+        return isValid() && current.next != null;                 // ┚ *isValid is just a comparison of int*
+    }
+
+*T(s, u) = B3*
+
+    private void verifyIntegrity () {
+        if (!isValid()) {                                         // ┒ B4
+            throw new IllegalStateException();                    // ┚
+        }
+    }
+
+*T(s, u) = B4*
+
+    public void next () {
+        verifyIntegrity();                                      // | B4
+        onCount++;                                              // | B5
+        if (onCount >= current.count) {                         // ┒
+            if (!hasNext()) {                                   // | B3 + B6
+                throw new NoSuchElementException();             // ┚
+            }
+            current = current.next;                             
+            onCount = 0;                                        
+        }
+    }
+
+    public boolean isValid () {
+        return owner.modCount == itModCount;
+    }
+
+    private void verifyIntegrity () {
+        if (!isValid()) {
+            throw new IllegalStateException();
+        }
+    }
+
+    public String getString () {
+        verifyIntegrity();
+        return current.text;
+    }
+
+    private Node find (String toFind) {    }
+
+*See problem 1 for solution, including dependencies*<br/>
+*T(s, u) = (A1)u + A2*
+
+    public boolean contains (String toCheck) {
+        return find(toCheck) != null;
+    }
+
+    public void insert (String toAdd) {  }
+
+*See problem 2 for solution, including dependencies*<br/>
+*T(s, u) = (C2 + C3)u + C1 + C4 + C5 + C6 + C7 + C8 + C9 + C10 + C11 + C12*
+
+    private int removeOccurrences (String text, int count) {  }
+
+*See problem 1 for solution, including dependencies*<br/>
+*T(s, u) = (A1)u + (A2 + A3 + A4 + A5 + A6 + A7)*
+
+    public int remove (String toRemove) {
+        return removeOccurrences(toRemove, 1);
+    }
+
+    public static LinkedYarn commonThreads (LinkedYarn y1, LinkedYarn y2) {
+         LinkedYarn result = new LinkedYarn(),
+                    y2Clone = y2.clone();
+
+         for (LinkedYarn.Iterator i1 = y1.getIterator(); i1.hasNext(); i1.next()) {
+             String current = i1.getString();
+             if (y2Clone.contains(current)) {
+                 result.insert(current);
+                 y2Clone.remove(current);
+             }
+         }
+
+         return result;
+    }
