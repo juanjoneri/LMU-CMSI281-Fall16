@@ -251,6 +251,33 @@
 }</code></pre><p><em>T(s1, s2, u1, u2) = B12 + (C5 + C6 + C7 + C14 + C15)u2 + C13 + [ B1 + B3 + B4 + 2B3 + + B4 + B6 + B7 + B8 + B9 + B3 + B6 + B10 + (A1)u2 + A2 + B11 + (C2 + C3)u1 + C1 + C4 + C5 + C6 + C7 + C8 + C9 + C10 + C11 + C12 + (A1)u + (A2 + A3 + A4 + A5 + A6 + A7) ]s1</em><br/></p>
 <h4 id="answer-5"><a class="header-link" href="#answer-5"></a>Answer</h4>
 <p> <strong>O( s1(u1+u2) )</strong></p>
+<h3 id="bettercommonthreads-"><a class="header-link" href="#bettercommonthreads-"></a>betterCommonThreads()</h3>
+<pre class="hljs"><code><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-keyword">count</span> (String toCount) {
+    <span class="hljs-keyword">int</span> <span class="hljs-keyword">index</span> = find(toCount);                                                  <span class="hljs-comment">// │ (A1)u + A2</span>
+
+    <span class="hljs-comment">// Case: no such string toCount</span>
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">index</span> == <span class="hljs-number">-1</span>) {                                                          <span class="hljs-comment">// ┒</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;                                                               <span class="hljs-comment">// │ D1</span>
+    }                                                                           <span class="hljs-comment">// ┚</span>
+
+    <span class="hljs-comment">// Case: return the number of instances</span>
+    <span class="hljs-keyword">return</span> items[<span class="hljs-keyword">index</span>].<span class="hljs-keyword">count</span>;                                                  <span class="hljs-comment">// │ D2</span>
+}</code></pre><p><em>T(s, u) = (A1)u + (A2 + D2 + D3)</em></p>
+<pre class="hljs"><code>public <span class="hljs-keyword">static</span> <span class="hljs-type">LinkedYarn</span> betterCommonThreads (<span class="hljs-type">LinkedYarn</span> y1, <span class="hljs-type">LinkedYarn</span> y2) {
+    <span class="hljs-type">LinkedYarn</span> <span class="hljs-literal">result</span> = new <span class="hljs-type">LinkedYarn</span>();                                        // │ <span class="hljs-type">B12</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">Node</span> curr1 = y1.head; curr1 != null; curr1 = curr1.next) {              // │ <span class="hljs-type">D2</span>                                                                         ┒
+        <span class="hljs-type">String</span> text = curr1.text;                                                // ┒                                                                            │
+        <span class="hljs-built_in">int</span> count1 = curr1.count,                                                // │ (<span class="hljs-type">A1</span>)u2 + (<span class="hljs-type">A2</span> + <span class="hljs-type">D2</span> + <span class="hljs-type">D3</span>) + <span class="hljs-type">D4</span>                                               │
+            count2 = y2.count(text);                                             // ┚                                                                            │ <span class="hljs-comment">#u1</span>
+        <span class="hljs-keyword">if</span> (count2 &gt; <span class="hljs-number">0</span>) {                                                        // ┒                                                                            │
+            <span class="hljs-literal">result</span>.insertOccurrences(text, <span class="hljs-type">Math</span>.min(count1, count2));            // │ (<span class="hljs-type">C2</span> + <span class="hljs-type">C3</span>)u1 + ( <span class="hljs-type">C1</span> + <span class="hljs-type">C4</span> + <span class="hljs-type">C5</span> + <span class="hljs-type">C6</span> + <span class="hljs-type">C7</span> + <span class="hljs-type">C8</span> + <span class="hljs-type">C9</span> + <span class="hljs-type">C10</span> + <span class="hljs-type">C11</span> + <span class="hljs-type">C12</span> ) + <span class="hljs-type">D5</span>  ┚
+        }                                                                        // ┚
+    }
+
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">result</span>;
+}</code></pre><p><em>T(s1, s2, u1, u2) = B12 + D2 + [ (A1)u2 + (A2 + D2 + D3) + D4 + (C2 + C3)u1 + ( C1 + C4 + C5 + C6 + C7 + C8 + C9 + C10 + C11 + C12 ) + D5 ]u1</em></p>
+<h4 id="answer-6"><a class="header-link" href="#answer-6"></a>Answer</h4>
+<p> <strong>O( u1(u1+u2) )</strong></p>
     </article>
   </body>
 </html>

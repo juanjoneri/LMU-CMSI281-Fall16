@@ -321,3 +321,38 @@
 
 #### Answer
  **O( s1(u1+u2) )**
+
+### betterCommonThreads()
+
+    public int count (String toCount) {
+        int index = find(toCount);                                                  // │ (A1)u + A2
+
+        // Case: no such string toCount
+        if (index == -1) {                                                          // ┒
+            return 0;                                                               // │ D1
+        }                                                                           // ┚
+
+        // Case: return the number of instances
+        return items[index].count;                                                  // │ D2
+    }
+
+*T(s, u) = (A1)u + (A2 + D2 + D3)*
+
+    public static LinkedYarn betterCommonThreads (LinkedYarn y1, LinkedYarn y2) {
+        LinkedYarn result = new LinkedYarn();                                        // │ B12
+        for (Node curr1 = y1.head; curr1 != null; curr1 = curr1.next) {              // │ D2                                                                         ┒
+            String text = curr1.text;                                                // ┒                                                                            │
+            int count1 = curr1.count,                                                // │ (A1)u2 + (A2 + D2 + D3) + D4                                               │
+                count2 = y2.count(text);                                             // ┚                                                                            │ #u1
+            if (count2 > 0) {                                                        // ┒                                                                            │
+                result.insertOccurrences(text, Math.min(count1, count2));            // │ (C2 + C3)u1 + ( C1 + C4 + C5 + C6 + C7 + C8 + C9 + C10 + C11 + C12 ) + D5  ┚
+            }                                                                        // ┚
+        }
+
+        return result;
+    }
+
+*T(s1, s2, u1, u2) = B12 + D2 + [ (A1)u2 + (A2 + D2 + D3) + D4 + (C2 + C3)u1 + ( C1 + C4 + C5 + C6 + C7 + C8 + C9 + C10 + C11 + C12 ) + D5 ]u1*
+
+#### Answer
+ **O( u1(u1+u2) )**
