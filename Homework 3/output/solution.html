@@ -182,7 +182,7 @@
 <h4 id="answer-4"><a class="header-link" href="#answer-4"></a>Answer</h4>
 <p> <strong>O(u1*u2)</strong></p>
 <h3 id="commonthreads-"><a class="header-link" href="#commonthreads-"></a>commonThreads()</h3>
-<pre class="hljs"><code><span class="hljs-keyword">public</span> <span class="hljs-function">LinkedYarn <span class="hljs-title">clone</span> <span class="hljs-params">()</span> </span>{  }</code></pre><p><em>See problem 2 for solution, including dependencies</em><br/>
+<pre class="hljs"><code><span class="hljs-keyword">public</span> <span class="hljs-function">LinkedYarn <span class="hljs-title">clone</span> <span class="hljs-params">()</span> </span>{  }</code></pre><p><em>See problem 3:knit() for solution, including dependencies</em><br/>
 <em>T(s, u) = (C5 + C6 + C7 + C14 + C15)u + C13</em></p>
 <pre class="hljs"><code><span class="hljs-built_in">Iterator</span> (LinkedYarn y) {
     owner = y;                                                <span class="hljs-comment">// ┒</span>
@@ -218,19 +218,19 @@
         current = current.<span class="hljs-keyword">next</span>;                             <span class="hljs-comment">// ┒ B9</span>
         onCount = <span class="hljs-number">0</span>;                                        <span class="hljs-comment">// ┚</span>
     }
-}</code></pre><p><em>T(s, u) = 2</em>B3 + + B4 + B6 + B7 + B8 + B9*</p>
+}</code></pre><p><em>T(s, u) = 2B3 + + B4 + B6 + B7 + B8 + B9</em></p>
 <pre class="hljs"><code><span class="hljs-keyword">public</span> <span class="hljs-keyword">String</span> getString () {
     verifyIntegrity();                                      <span class="hljs-comment">// │ B3 + B6</span>
     <span class="hljs-built_in">return</span> current.<span class="hljs-built_in">text</span>;                                    <span class="hljs-comment">// │ B10</span>
 }</code></pre><p><em>T(s, u) = B3 + B6 + B10</em></p>
-<pre class="hljs"><code>private <span class="hljs-keyword">Node</span> <span class="hljs-title">find</span> (<span class="hljs-keyword">String</span> toFind) {    }</code></pre><p><em>See problem 1 for solution, including dependencies</em><br/>
+<pre class="hljs"><code>private <span class="hljs-keyword">Node</span> <span class="hljs-title">find</span> (<span class="hljs-keyword">String</span> toFind) {    }</code></pre><p><em>See problem 1 or 2 for solution</em><br/>
 <em>T(s, u) = (A1)u + A2</em></p>
 <pre class="hljs"><code><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> contains (<span class="hljs-keyword">String</span> toCheck) {
     <span class="hljs-built_in">return</span> <span class="hljs-built_in">find</span>(toCheck) != null;                          <span class="hljs-comment">// │ (A1)u + A2 + B11</span>
 }</code></pre><p><em>T(s, u) = (A1)u + A2 + B11</em></p>
 <pre class="hljs"><code><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> insert (<span class="hljs-keyword">String</span> toAdd) {  }</code></pre><p><em>See problem 2 for solution, including dependencies</em><br/>
 <em>T(s, u) = (C2 + C3)u + C1 + C4 + C5 + C6 + C7 + C8 + C9 + C10 + C11 + C12</em></p>
-<pre class="hljs"><code><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> removeOccurrences (<span class="hljs-keyword">String</span> <span class="hljs-built_in">text</span>, <span class="hljs-keyword">int</span> count) {  }</code></pre><p><em>See problem 1 for solution, including dependencies</em><br/>
+<pre class="hljs"><code><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> removeOccurrences (<span class="hljs-keyword">String</span> <span class="hljs-built_in">text</span>, <span class="hljs-keyword">int</span> count) {  }</code></pre><p><em>See problem 1 for solution, including dependencies (by inspection the LinkedYarn implementation has equivalent growth rate )</em><br/>
 <em>T(s, u) = (A1)u + (A2 + A3 + A4 + A5 + A6 + A7)</em></p>
 <pre class="hljs"><code><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-built_in">remove</span> (<span class="hljs-keyword">String</span> toRemove) {
     <span class="hljs-built_in">return</span> removeOccurrences(toRemove, <span class="hljs-number">1</span>);                <span class="hljs-comment">// │ (A1)u + (A2 + A3 + A4 + A5 + A6 + A7)</span>
