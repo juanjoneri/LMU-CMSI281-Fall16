@@ -233,47 +233,47 @@
 
 *T(s, u) = B1 + B2*
 
-    public boolean hasNext () {
-        if (current.count > onCount+1) {return true;}             // ┒ B3
-        return isValid() && current.next != null;                 // ┚ *isValid is just a comparison of int*
+    public boolean isValid () {
+        return owner.modCount == itModCount;                      // |B3
     }
 
 *T(s, u) = B3*
 
+    public boolean hasNext () {
+        if (current.count > onCount+1) {return true;}             // | B4
+        return isValid() && current.next != null;                 // | B3 + B5
+    }
+
+*T(s, u) = B3 + B4*
+
     private void verifyIntegrity () {
-        if (!isValid()) {                                         // ┒ B4
-            throw new IllegalStateException();                    // ┚
+        if (!isValid()) {                                         // | B3
+            throw new IllegalStateException();                    // | B6
         }
     }
 
-*T(s, u) = B4*
+*T(s, u) = B3 + B6*
 
     public void next () {
-        verifyIntegrity();                                      // | B4
-        onCount++;                                              // | B5
+        verifyIntegrity();                                      // | B3 + B6
+        onCount++;                                              // | B7
         if (onCount >= current.count) {                         // ┒
-            if (!hasNext()) {                                   // | B3 + B6
+            if (!hasNext()) {                                   // | B3 + B4 + B8
                 throw new NoSuchElementException();             // ┚
             }
-            current = current.next;                             
-            onCount = 0;                                        
+            current = current.next;                             // ┒ B9
+            onCount = 0;                                        // ┚
         }
     }
 
-    public boolean isValid () {
-        return owner.modCount == itModCount;
-    }
-
-    private void verifyIntegrity () {
-        if (!isValid()) {
-            throw new IllegalStateException();
-        }
-    }
+*T(s, u) = 2*B3 + + B4 + B6 + B7 + B8 + B9*
 
     public String getString () {
-        verifyIntegrity();
-        return current.text;
+        verifyIntegrity();                                      // | B3 + B6
+        return current.text;                                    // | B10
     }
+
+*T(s, u) = B3 + B6 + B10*
 
     private Node find (String toFind) {    }
 
@@ -281,8 +281,10 @@
 *T(s, u) = (A1)u + A2*
 
     public boolean contains (String toCheck) {
-        return find(toCheck) != null;
+        return find(toCheck) != null;                          // | (A1)u + A2 + B11
     }
+
+*T(s, u) = (A1)u + A2 + B11*
 
     public void insert (String toAdd) {  }
 
@@ -295,20 +297,27 @@
 *T(s, u) = (A1)u + (A2 + A3 + A4 + A5 + A6 + A7)*
 
     public int remove (String toRemove) {
-        return removeOccurrences(toRemove, 1);
+        return removeOccurrences(toRemove, 1);                // | (A1)u + (A2 + A3 + A4 + A5 + A6 + A7)
     }
 
-    public static LinkedYarn commonThreads (LinkedYarn y1, LinkedYarn y2) {
-         LinkedYarn result = new LinkedYarn(),
-                    y2Clone = y2.clone();
+*T(s, u) = (A1)u + (A2 + A3 + A4 + A5 + A6 + A7)*
 
-         for (LinkedYarn.Iterator i1 = y1.getIterator(); i1.hasNext(); i1.next()) {
-             String current = i1.getString();
-             if (y2Clone.contains(current)) {
-                 result.insert(current);
-                 y2Clone.remove(current);
+    public static LinkedYarn commonThreads (LinkedYarn y1, LinkedYarn y2) {
+         LinkedYarn result = new LinkedYarn(),                                         // | B12
+                    y2Clone = y2.clone();                                              // | (C5 + C6 + C7 + C14 + C15)u2 + C13
+
+         for (LinkedYarn.Iterator i1 = y1.getIterator(); i1.hasNext(); i1.next()) {    // | B1 + B3 + B4 + 2*B3 + + B4 + B6 + B7 + B8 + B9                    ┒
+             String current = i1.getString();                                          // | B3 + B6 + B10                                                     |
+             if (y2Clone.contains(current)) {                                          // | (A1)u2 + A2 + B11                                                 | #s1
+                 result.insert(current);                                               // | (C2 + C3)u1 + C1 + C4 + C5 + C6 + C7 + C8 + C9 + C10 + C11 + C12  |
+                 y2Clone.remove(current);                                              // | (A1)u2 + (A2 + A3 + A4 + A5 + A6 + A7)                            ┚
              }
          }
 
          return result;
     }
+
+*T(s1, s2, u1, u2) = B12 + (C5 + C6 + C7 + C14 + C15)u2 + C13 + [ B1 + B3 + B4 + 2*B3 + + B4 + B6 + B7 + B8 + B9 + B3 + B6 + B10 + (A1)u2 + A2 + B11 + (C2 + C3)u1 + C1 + C4 + C5 + C6 + C7 + C8 + C9 + C10 + C11 + C12 + (A1)u + (A2 + A3 + A4 + A5 + A6 + A7) ]s1*<br/>
+
+#### Answer
+ **O( s1(u1+u2) )**
