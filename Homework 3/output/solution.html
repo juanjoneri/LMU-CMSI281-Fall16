@@ -61,10 +61,10 @@
     }                                                          <span class="hljs-comment">// ┚</span>
 }</code></pre><p><em>T(s, u) = (C1)u + C2 + C8 + [ (C1)u + (C2 + C3 + C4 + C5 + C6 + C7) ]</em></p>
 <h4 id="answer"><a class="header-link" href="#answer"></a>Answer</h4>
-<p> <strong>O(n)</strong></p>
+<p> <strong>O(u)</strong></p>
 <h3 id="getnth-"><a class="header-link" href="#getnth-"></a>getNth()</h3>
 <pre class="hljs"><code><span class="hljs-keyword">public</span> String getNth (<span class="hljs-keyword">int</span> n) {
-    <span class="hljs-keyword">if</span> (n &gt;= size || n &lt; <span class="hljs-number">0</span>) {                                  <span class="hljs-comment">// ┒</span>
+    <span class="hljs-keyword">if</span> (n &gt;= size ││ n &lt; <span class="hljs-number">0</span>) {                                  <span class="hljs-comment">// ┒</span>
         <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> IllegalArgumentException();                  <span class="hljs-comment">// │ C1</span>
     }                                                          <span class="hljs-comment">// ┚</span>
 
@@ -81,7 +81,7 @@
     <span class="hljs-keyword">return</span> currentEntry.text;                                  <span class="hljs-comment">// │ C4</span>
 }</code></pre><p><em>T(s, u) = (C3)s + (C1 + C2 + C4)</em></p>
 <h4 id="answer-1"><a class="header-link" href="#answer-1"></a>Answer</h4>
-<p> <strong>O(n)</strong></p>
+<p> <strong>O(s)</strong></p>
 <h2 id="problem-2"><a class="header-link" href="#problem-2"></a>Problem 2</h2>
 <blockquote>
 <p> For each of the following methods, provide the worst case Big-O asymptotic runtime complexities as a function of: <strong>s = the size of the Yarn</strong> (i.e., the number of individual String occurrences), OR <strong>u = the uniqueSize of the LinkedYarn</strong> (i.e., the number of distinct Strings). Show your work.</p>
@@ -93,61 +93,164 @@
 <h3 id="swap-"><a class="header-link" href="#swap-"></a>swap()</h3>
 <pre class="hljs"><code><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> swap (LinkedYarn other) {
     Node tempHead = head;                                     <span class="hljs-comment">// ┒</span>
-    <span class="hljs-keyword">int</span> tempSize = <span class="hljs-built_in">size</span>,                                      <span class="hljs-comment">// |</span>
-        tempUniqueSize = uniqueSize;                          <span class="hljs-comment">// |</span>
-                                                              <span class="hljs-comment">// |</span>
-    head = other.head;                                        <span class="hljs-comment">// |</span>
-    <span class="hljs-built_in">size</span> = other.<span class="hljs-built_in">size</span>;                                        <span class="hljs-comment">// |</span>
-    uniqueSize = other.uniqueSize;                            <span class="hljs-comment">// | C1</span>
-                                                              <span class="hljs-comment">// |</span>
-    other.head = tempHead;                                    <span class="hljs-comment">// |</span>
-    other.<span class="hljs-built_in">size</span> = tempSize;                                    <span class="hljs-comment">// |</span>
-    other.uniqueSize = tempUniqueSize;                        <span class="hljs-comment">// |</span>
-    modCount++;                                               <span class="hljs-comment">// |</span>
+    <span class="hljs-keyword">int</span> tempSize = <span class="hljs-built_in">size</span>,                                      <span class="hljs-comment">// │</span>
+        tempUniqueSize = uniqueSize;                          <span class="hljs-comment">// │</span>
+                                                              <span class="hljs-comment">// │</span>
+    head = other.head;                                        <span class="hljs-comment">// │</span>
+    <span class="hljs-built_in">size</span> = other.<span class="hljs-built_in">size</span>;                                        <span class="hljs-comment">// │</span>
+    uniqueSize = other.uniqueSize;                            <span class="hljs-comment">// │ C1</span>
+                                                              <span class="hljs-comment">// │</span>
+    other.head = tempHead;                                    <span class="hljs-comment">// │</span>
+    other.<span class="hljs-built_in">size</span> = tempSize;                                    <span class="hljs-comment">// │</span>
+    other.uniqueSize = tempUniqueSize;                        <span class="hljs-comment">// │</span>
+    modCount++;                                               <span class="hljs-comment">// │</span>
     other.modCount++;                                         <span class="hljs-comment">// ┚</span>
 }</code></pre><p><em>T(s, u) = C1</em></p>
 <h4 id="answer-2"><a class="header-link" href="#answer-2"></a>Answer</h4>
 <p> <strong>O(1)</strong></p>
 <h3 id="insert-"><a class="header-link" href="#insert-"></a>insert()</h3>
 <pre class="hljs"><code><span class="hljs-keyword">private</span> Node <span class="hljs-built_in">find</span> (<span class="hljs-keyword">String</span> toFind) {
-    Node curr = head;                                         <span class="hljs-comment">// | C1</span>
-    <span class="hljs-built_in">for</span> (; curr != null; curr = curr.next) {                  <span class="hljs-comment">// | C2  ┒</span>
-        <span class="hljs-built_in">if</span> (curr.<span class="hljs-built_in">text</span>.equals(toFind)) {                       <span class="hljs-comment">// ┒     | #u</span>
-            <span class="hljs-built_in">break</span>;                                            <span class="hljs-comment">// | C3  ┚</span>
+    Node curr = head;                                         <span class="hljs-comment">// │ C1</span>
+    <span class="hljs-built_in">for</span> (; curr != null; curr = curr.next) {                  <span class="hljs-comment">// │ C2  ┒</span>
+        <span class="hljs-built_in">if</span> (curr.<span class="hljs-built_in">text</span>.equals(toFind)) {                       <span class="hljs-comment">// ┒     │ #u</span>
+            <span class="hljs-built_in">break</span>;                                            <span class="hljs-comment">// │ C3  ┚</span>
         }                                                     <span class="hljs-comment">// ┚</span>
     }
-    <span class="hljs-built_in">return</span> curr;                                              <span class="hljs-comment">// | C4</span>
+    <span class="hljs-built_in">return</span> curr;                                              <span class="hljs-comment">// │ C4</span>
 }</code></pre><p><em>T(s, u) = (C2 + C3)u + C1 + C4</em></p>
 <pre class="hljs"><code><span class="hljs-keyword">private</span> <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">prependNode</span> <span class="hljs-params">(Node n)</span> </span>{
-    Node oldHead = head;                                      <span class="hljs-comment">// | C5</span>
-    head = n;                                                 <span class="hljs-comment">// | C6</span>
+    Node oldHead = head;                                      <span class="hljs-comment">// │ C5</span>
+    head = n;                                                 <span class="hljs-comment">// │ C6</span>
     <span class="hljs-keyword">if</span> (oldHead != <span class="hljs-keyword">null</span>) {                                    <span class="hljs-comment">// ┒</span>
-        head.next = oldHead;                                  <span class="hljs-comment">// | C7</span>
-        oldHead.prev = head;                                  <span class="hljs-comment">// |</span>
+        head.next = oldHead;                                  <span class="hljs-comment">// │ C7</span>
+        oldHead.prev = head;                                  <span class="hljs-comment">// │</span>
     }                                                         <span class="hljs-comment">// ┚</span>
 }</code></pre><p><em>T(s, u) = C5 + C6 + C7</em></p>
 <pre class="hljs"><code><span class="hljs-keyword">private</span> <span class="hljs-keyword">boolean</span> insertOccurrences (String text, <span class="hljs-keyword">int</span> <span class="hljs-keyword">count</span>) {
-    Node found = <span class="hljs-keyword">find</span>(text);                                  <span class="hljs-comment">// | (C2 + C3)u + C1 + C4</span>
+    Node found = <span class="hljs-keyword">find</span>(text);                                  <span class="hljs-comment">// │ (C2 + C3)u + C1 + C4</span>
 
     <span class="hljs-comment">// Case: new string, so add new Node</span>
-    <span class="hljs-keyword">if</span> (found == <span class="hljs-keyword">null</span>) {                                      <span class="hljs-comment">// | C8            ┒</span>
-        prependNode(<span class="hljs-keyword">new</span> Node(text, <span class="hljs-keyword">count</span>));                   <span class="hljs-comment">// | C5 + C6 + C7  | C5 + C6 + C7 + C8 + C9</span>
-        uniqueSize++;                                         <span class="hljs-comment">// | C9            ┚</span>
+    <span class="hljs-keyword">if</span> (found == <span class="hljs-keyword">null</span>) {                                      <span class="hljs-comment">// │ C8            ┒</span>
+        prependNode(<span class="hljs-keyword">new</span> Node(text, <span class="hljs-keyword">count</span>));                   <span class="hljs-comment">// │ C5 + C6 + C7  │ C5 + C6 + C7 + C8 + C9</span>
+        uniqueSize++;                                         <span class="hljs-comment">// │ C9            ┚</span>
 
     <span class="hljs-comment">// Case: existing string, so update count</span>
     } <span class="hljs-keyword">else</span> {
-        found.<span class="hljs-keyword">count</span> += <span class="hljs-keyword">count</span>;                                 <span class="hljs-comment">// | C10</span>
+        found.<span class="hljs-keyword">count</span> += <span class="hljs-keyword">count</span>;                                 <span class="hljs-comment">// │ C10</span>
     }
     <span class="hljs-keyword">size</span> += <span class="hljs-keyword">count</span>;                                            <span class="hljs-comment">// ┒ C11</span>
     modCount++;                                               <span class="hljs-comment">// ┚</span>
 
-    <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;                                              <span class="hljs-comment">// | C12</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;                                              <span class="hljs-comment">// │ C12</span>
 }</code></pre><p><em>T(s, u) = (C2 + C3)u + C1 + C4 + C5 + C6 + C7 + C8 + C9 + C10 + C11 + C12</em></p>
 <pre class="hljs"><code><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> insert (<span class="hljs-keyword">String</span> toAdd) {
-    insertOccurrences(toAdd, <span class="hljs-number">1</span>);           <span class="hljs-comment">// | (C2 + C3)u + C1 + C4 + C5 + C6 + C7 + C8 + C9 + C10 + C11 + C12</span>
+    insertOccurrences(toAdd, <span class="hljs-number">1</span>);                              <span class="hljs-comment">// │ (C2 + C3)u + C1 + C4 + C5 + C6 + C7 + C8 + C9 + C10 + C11 + C12</span>
 }</code></pre><p><em>T(s, u) = (C2 + C3)u + C1 + C4 + C5 + C6 + C7 + C8 + C9 + C10 + C11 + C12</em></p>
 <h4 id="answer-3"><a class="header-link" href="#answer-3"></a>Answer</h4>
-<p> <strong>O(n)</strong></p>
+<p> <strong>O(u)</strong></p>
+<h2 id="problem-3"><a class="header-link" href="#problem-3"></a>Problem 3</h2>
+<blockquote>
+<p> For each of the following methods, provide the worst case Big-O asymptotic runtime complexities as a function of: <strong>s1, s2 = the size of the LinkedYarn</strong> (i.e., the number of individual String occurrences in y1 and y2, respectively), OR <strong>u1, u2 = the uniqueSize of the LinkedYarn</strong> (i.e., the number of distinct Strings in y1 and y2, respectively). Show your work.</p>
+<ol class="list">
+<li>knit()</li>
+<li>commonThreads()</li>
+<li>betterCommonThreads()</li>
+</ol>
+</blockquote>
+<h3 id="knit-"><a class="header-link" href="#knit-"></a>knit()</h3>
+<pre class="hljs"><code>private void prependNode (<span class="hljs-keyword">Node</span> <span class="hljs-title">n</span>) { }</code></pre><p><em>See problem 2 for solution</em><br/>
+<em>T(s, u)  = C5 + C6 + C7</em></p>
+<pre class="hljs"><code><span class="hljs-keyword">private</span> <span class="hljs-keyword">boolean</span> insertOccurrences (<span class="hljs-keyword">String</span> <span class="hljs-built_in">text</span>, <span class="hljs-keyword">int</span> count) { }</code></pre><p><em>See problem 2 for solution, including dependencies</em><br/>
+<em>T(s, u)  = (C2 + C3)u + C1 + C4 + C5 + C6 + C7 + C8 + C9 + C10 + C11 + C12</em></p>
+<pre class="hljs"><code>public LinkedYarn clone () {
+    LinkedYarn dolly = new LinkedYarn();                      <span class="hljs-comment">// │ C13</span>
+    <span class="hljs-keyword">for</span> (Node <span class="hljs-keyword">n</span> = head; <span class="hljs-keyword">n</span> != null; <span class="hljs-keyword">n</span> = <span class="hljs-keyword">n</span>.next) {              <span class="hljs-comment">// │ C14           ┒</span>
+        dolly.prependNode(new Node(<span class="hljs-keyword">n</span>.text, <span class="hljs-keyword">n</span>.<span class="hljs-keyword">count</span>));         <span class="hljs-comment">// │ C5 + C6 + C7  │ #u</span>
+        dolly.size += <span class="hljs-keyword">n</span>.<span class="hljs-keyword">count</span>;                                <span class="hljs-comment">// ┒ C15           ┚</span>
+        dolly.uniqueSize++;                                   <span class="hljs-comment">// ┚</span>
+    }
+    <span class="hljs-keyword">return</span> dolly;
+}</code></pre><p><em>T(s, u) = (C5 + C6 + C7 + C14 + C15)u + C13</em></p>
+<pre class="hljs"><code>public <span class="hljs-keyword">static</span> <span class="hljs-type">LinkedYarn</span> knit (<span class="hljs-type">LinkedYarn</span> y1, <span class="hljs-type">LinkedYarn</span> y2) {
+    <span class="hljs-type">LinkedYarn</span> <span class="hljs-literal">result</span> = y1.clone();                           // │ (<span class="hljs-type">C5</span> + <span class="hljs-type">C6</span> + <span class="hljs-type">C7</span> + <span class="hljs-type">C14</span> + <span class="hljs-type">C15</span>)u1 + <span class="hljs-type">C13</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">Node</span> n = y2.head; n != null; n = n.next) {           // │ <span class="hljs-type">C16</span>                                                               ┒ <span class="hljs-comment">#u2</span>
+        <span class="hljs-literal">result</span>.insertOccurrences(n.text, n.count);            // │ (<span class="hljs-type">C2</span> + <span class="hljs-type">C3</span>)u1 + <span class="hljs-type">C1</span> + <span class="hljs-type">C4</span> + <span class="hljs-type">C5</span> + <span class="hljs-type">C6</span> + <span class="hljs-type">C7</span> + <span class="hljs-type">C8</span> + <span class="hljs-type">C9</span> + <span class="hljs-type">C10</span> + <span class="hljs-type">C11</span> + <span class="hljs-type">C12</span>  ┚
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">result</span>;                                            // │ <span class="hljs-type">C17</span>
+}</code></pre><p><em>T(s1, s2, u1, u2) = (C5 + C6 + C7 + C14 + C15)u1 + C13 + [ (C2 + C3)u1 + C1 + C4 + C5 + C6 + C7 + C8 + C9 + C10 + C11 + C12 + C16 ]u2 + C17</em><br/>
+<em>T(s1, s2, u1, u2) = (C2 + C3)u1u2 + (C5 + C6 + C7 + C14 + C15)u1 + (C1 + C4 + C5 + C6 + C7 + C8 + C9 + C10 + C11 + C12 + C16)u2 + C13 + C17</em></p>
+<h4 id="answer-4"><a class="header-link" href="#answer-4"></a>Answer</h4>
+<p> <strong>O(u1*u2)</strong></p>
+<h3 id="commonthreads-"><a class="header-link" href="#commonthreads-"></a>commonThreads()</h3>
+<pre class="hljs"><code><span class="hljs-keyword">public</span> <span class="hljs-function">LinkedYarn <span class="hljs-title">clone</span> <span class="hljs-params">()</span> </span>{  }</code></pre><p><em>See problem 2 for solution, including dependencies</em><br/>
+<em>T(s, u) = (C5 + C6 + C7 + C14 + C15)u + C13</em></p>
+<pre class="hljs"><code><span class="hljs-built_in">Iterator</span> (LinkedYarn y) {
+    owner = y;                                                <span class="hljs-comment">// ┒</span>
+    itModCount = y.modCount;                                  <span class="hljs-comment">// │ B1</span>
+    current = y.head;                                         <span class="hljs-comment">// │</span>
+    onCount = <span class="hljs-number">0</span>;                                              <span class="hljs-comment">// ┚</span>
+}</code></pre><p><em>T(s, u) = B1</em></p>
+<pre class="hljs"><code><span class="hljs-keyword">public</span> LinkedYarn.<span class="hljs-function">Iterator <span class="hljs-title">getIterator</span> <span class="hljs-params">()</span> </span>{
+    <span class="hljs-keyword">if</span> (isEmpty()) {                                          <span class="hljs-comment">// ┒</span>
+        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> IllegalStateException();                    <span class="hljs-comment">// │ B2</span>
+    }                                                         <span class="hljs-comment">// ┚</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> LinkedYarn.Iterator(<span class="hljs-keyword">this</span>);                     <span class="hljs-comment">// │ B1</span>
+}</code></pre><p><em>T(s, u) = B1 + B2</em></p>
+<pre class="hljs"><code><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-built_in">isValid</span> () {
+    <span class="hljs-built_in">return</span> owner.modCount == itModCount;                      <span class="hljs-comment">// │B3</span>
+}</code></pre><p><em>T(s, u) = B3</em></p>
+<pre class="hljs"><code><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> hasNext () {
+    <span class="hljs-keyword">if</span> (current.<span class="hljs-keyword">count</span> &gt; onCount+<span class="hljs-number">1</span>) {<span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;}             <span class="hljs-comment">// │ B4</span>
+    <span class="hljs-keyword">return</span> isValid() &amp;&amp; current.<span class="hljs-keyword">next</span> != <span class="hljs-keyword">null</span>;                 <span class="hljs-comment">// │ B3 + B5</span>
+}</code></pre><p><em>T(s, u) = B3 + B4</em></p>
+<pre class="hljs"><code><span class="hljs-keyword">private</span> <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">verifyIntegrity</span> <span class="hljs-params">()</span> </span>{
+    <span class="hljs-keyword">if</span> (!isValid()) {                                         <span class="hljs-comment">// │ B3</span>
+        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> IllegalStateException();                    <span class="hljs-comment">// │ B6</span>
+    }
+}</code></pre><p><em>T(s, u) = B3 + B6</em></p>
+<pre class="hljs"><code><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-keyword">next</span> () {
+    verifyIntegrity();                                      <span class="hljs-comment">// │ B3 + B6</span>
+    onCount++;                                              <span class="hljs-comment">// │ B7</span>
+    <span class="hljs-keyword">if</span> (onCount &gt;= current.<span class="hljs-keyword">count</span>) {                         <span class="hljs-comment">// ┒</span>
+        <span class="hljs-keyword">if</span> (!hasNext()) {                                   <span class="hljs-comment">// │ B3 + B4 + B8</span>
+            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> NoSuchElementException();             <span class="hljs-comment">// ┚</span>
+        }
+        current = current.<span class="hljs-keyword">next</span>;                             <span class="hljs-comment">// ┒ B9</span>
+        onCount = <span class="hljs-number">0</span>;                                        <span class="hljs-comment">// ┚</span>
+    }
+}</code></pre><p><em>T(s, u) = 2</em>B3 + + B4 + B6 + B7 + B8 + B9*</p>
+<pre class="hljs"><code><span class="hljs-keyword">public</span> <span class="hljs-keyword">String</span> getString () {
+    verifyIntegrity();                                      <span class="hljs-comment">// │ B3 + B6</span>
+    <span class="hljs-built_in">return</span> current.<span class="hljs-built_in">text</span>;                                    <span class="hljs-comment">// │ B10</span>
+}</code></pre><p><em>T(s, u) = B3 + B6 + B10</em></p>
+<pre class="hljs"><code>private <span class="hljs-keyword">Node</span> <span class="hljs-title">find</span> (<span class="hljs-keyword">String</span> toFind) {    }</code></pre><p><em>See problem 1 for solution, including dependencies</em><br/>
+<em>T(s, u) = (A1)u + A2</em></p>
+<pre class="hljs"><code><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> contains (<span class="hljs-keyword">String</span> toCheck) {
+    <span class="hljs-built_in">return</span> <span class="hljs-built_in">find</span>(toCheck) != null;                          <span class="hljs-comment">// │ (A1)u + A2 + B11</span>
+}</code></pre><p><em>T(s, u) = (A1)u + A2 + B11</em></p>
+<pre class="hljs"><code><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> insert (<span class="hljs-keyword">String</span> toAdd) {  }</code></pre><p><em>See problem 2 for solution, including dependencies</em><br/>
+<em>T(s, u) = (C2 + C3)u + C1 + C4 + C5 + C6 + C7 + C8 + C9 + C10 + C11 + C12</em></p>
+<pre class="hljs"><code><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> removeOccurrences (<span class="hljs-keyword">String</span> <span class="hljs-built_in">text</span>, <span class="hljs-keyword">int</span> count) {  }</code></pre><p><em>See problem 1 for solution, including dependencies</em><br/>
+<em>T(s, u) = (A1)u + (A2 + A3 + A4 + A5 + A6 + A7)</em></p>
+<pre class="hljs"><code><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-built_in">remove</span> (<span class="hljs-keyword">String</span> toRemove) {
+    <span class="hljs-built_in">return</span> removeOccurrences(toRemove, <span class="hljs-number">1</span>);                <span class="hljs-comment">// │ (A1)u + (A2 + A3 + A4 + A5 + A6 + A7)</span>
+}</code></pre><p><em>T(s, u) = (A1)u + (A2 + A3 + A4 + A5 + A6 + A7)</em></p>
+<pre class="hljs"><code>public <span class="hljs-keyword">static</span> <span class="hljs-type">LinkedYarn</span> commonThreads (<span class="hljs-type">LinkedYarn</span> y1, <span class="hljs-type">LinkedYarn</span> y2) {
+     <span class="hljs-type">LinkedYarn</span> <span class="hljs-literal">result</span> = new <span class="hljs-type">LinkedYarn</span>(),                                         // │ <span class="hljs-type">B12</span>
+                y2Clone = y2.clone();                                              // │ (<span class="hljs-type">C5</span> + <span class="hljs-type">C6</span> + <span class="hljs-type">C7</span> + <span class="hljs-type">C14</span> + <span class="hljs-type">C15</span>)u2 + <span class="hljs-type">C13</span>
+
+     <span class="hljs-keyword">for</span> (<span class="hljs-type">LinkedYarn</span>.<span class="hljs-type">Iterator</span> i1 = y1.getIterator(); i1.hasNext(); i1.next()) {    // │ <span class="hljs-type">B1</span> + <span class="hljs-type">B3</span> + <span class="hljs-type">B4</span> + <span class="hljs-number">2</span>*<span class="hljs-type">B3</span> + + <span class="hljs-type">B4</span> + <span class="hljs-type">B6</span> + <span class="hljs-type">B7</span> + <span class="hljs-type">B8</span> + <span class="hljs-type">B9</span>                    ┒
+         <span class="hljs-type">String</span> current = i1.getString();                                          // │ <span class="hljs-type">B3</span> + <span class="hljs-type">B6</span> + <span class="hljs-type">B10</span>                                                     │
+         <span class="hljs-keyword">if</span> (y2Clone.contains(current)) {                                          // │ (<span class="hljs-type">A1</span>)u2 + <span class="hljs-type">A2</span> + <span class="hljs-type">B11</span>                                                 │ <span class="hljs-comment">#s1</span>
+             <span class="hljs-literal">result</span>.insert(current);                                               // │ (<span class="hljs-type">C2</span> + <span class="hljs-type">C3</span>)u1 + <span class="hljs-type">C1</span> + <span class="hljs-type">C4</span> + <span class="hljs-type">C5</span> + <span class="hljs-type">C6</span> + <span class="hljs-type">C7</span> + <span class="hljs-type">C8</span> + <span class="hljs-type">C9</span> + <span class="hljs-type">C10</span> + <span class="hljs-type">C11</span> + <span class="hljs-type">C12</span>  │
+             y2Clone.remove(current);                                              // │ (<span class="hljs-type">A1</span>)u2 + (<span class="hljs-type">A2</span> + <span class="hljs-type">A3</span> + <span class="hljs-type">A4</span> + <span class="hljs-type">A5</span> + <span class="hljs-type">A6</span> + <span class="hljs-type">A7</span>)                            ┚
+         }
+     }
+
+     <span class="hljs-keyword">return</span> <span class="hljs-literal">result</span>;
+}</code></pre><p><em>T(s1, s2, u1, u2) = B12 + (C5 + C6 + C7 + C14 + C15)u2 + C13 + [ B1 + B3 + B4 + 2B3 + + B4 + B6 + B7 + B8 + B9 + B3 + B6 + B10 + (A1)u2 + A2 + B11 + (C2 + C3)u1 + C1 + C4 + C5 + C6 + C7 + C8 + C9 + C10 + C11 + C12 + (A1)u + (A2 + A3 + A4 + A5 + A6 + A7) ]s1</em><br/></p>
+<h4 id="answer-5"><a class="header-link" href="#answer-5"></a>Answer</h4>
+<p> <strong>O( s1(u1+u2) )</strong></p>
     </article>
   </body>
 </html>
