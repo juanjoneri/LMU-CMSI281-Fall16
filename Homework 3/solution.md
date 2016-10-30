@@ -212,7 +212,7 @@
 
     public LinkedYarn clone () {  }
 
-*See problem 2 for solution, including dependencies*<br/>
+*See problem 3:knit() for solution, including dependencies*<br/>
 *T(s, u) = (C5 + C6 + C7 + C14 + C15)u + C13*
 
     Iterator (LinkedYarn y) {
@@ -266,7 +266,7 @@
         }
     }
 
-*T(s, u) = 2*B3 + + B4 + B6 + B7 + B8 + B9*
+*T(s, u) = 2B3 + + B4 + B6 + B7 + B8 + B9*
 
     public String getString () {
         verifyIntegrity();                                      // │ B3 + B6
@@ -277,7 +277,7 @@
 
     private Node find (String toFind) {    }
 
-*See problem 1 for solution, including dependencies*<br/>
+*See problem 1 or 2 for solution*<br/>
 *T(s, u) = (A1)u + A2*
 
     public boolean contains (String toCheck) {
@@ -293,7 +293,7 @@
 
     private int removeOccurrences (String text, int count) {  }
 
-*See problem 1 for solution, including dependencies*<br/>
+*See problem 1 for solution, including dependencies (by inspection the LinkedYarn implementation has equivalent growth rate )*<br/>
 *T(s, u) = (A1)u + (A2 + A3 + A4 + A5 + A6 + A7)*
 
     public int remove (String toRemove) {
