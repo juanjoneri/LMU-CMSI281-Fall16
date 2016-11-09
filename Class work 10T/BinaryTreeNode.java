@@ -30,12 +30,25 @@ public class BinaryTreeNode {
      }
 
      public void doubleTree () {
-         this.left.add(this.clone(), "L");
+        if( this.hasChild("L")){
+            this.left.doubleTree();
+        }
+        if( this.hasChild("R")){
+            this.right.doubleTree();
+        }
+        this.doubleNode();
      }
 
-     public boolean sameTree (BinaryTreeNode n1, BinaryTreeNode n2) {
-         throw new UnsupportedOperationException();
-     }
+    public boolean sameTree (BinaryTreeNode n1, BinaryTreeNode n2) {
+        if(n1 == null && n2 == null){
+            return true;
+        } else if(n1 == null || n2 == null){
+            return false;
+        }
+        // Very readable code!
+        return n1.getString().equals( n2.getString() ) ?  sameTree( n1.getChild("L"), n2.getChild("L") ) && sameTree( n1.getChild("R"), n2.getChild("R") ) : false;
+
+    }
 
     public String toString(){
 
@@ -65,19 +78,10 @@ public class BinaryTreeNode {
          }
      }
 
-     // Returns a clone of the current node with same children
-     @Override
-     public BinaryTreeNode clone(){
-
-        BinaryTreeNode cloneNode = new BinaryTreeNode( this.getString() );
-        if( this.hasChild("L") ){
-            cloneNode.add( this.getChild("L").clone(), "L");
-        }
-        if( this.hasChild("R") ){
-            cloneNode.add( this.getChild("R").clone(), "R");
-        }
-
-        return cloneNode;
+     private void doubleNode(){
+        BinaryTreeNode toAdd = new BinaryTreeNode(this.getString());
+        toAdd.add(this.getChild("L"), "L");
+        this.left = toAdd;
      }
 
  }
