@@ -55,8 +55,10 @@ class BinaryHeap {
         ArrayList<Integer> sortedHeap = (ArrayList<Integer>) this.heap.clone();
         for(int i = sortedHeap.size() - 1; i > 1; i --){
             swap(sortedHeap, 0, i);
-            heapify(sortedHeap, 0, i-1);
+            sortedHeap = heapify(sortedHeap, 0, i-1);
         }
+        //tiny correction
+        swap(sortedHeap, 0, 1);
         return sortedHeap;
     }
 
@@ -70,13 +72,13 @@ class BinaryHeap {
         return i >= 0 && i < heap.size();
     }
 
-    private void heapify(ArrayList<Integer> heap, int i){
+    private ArrayList<Integer> heapify(ArrayList<Integer> heap, int i){
 
-        int l = this.getChild(i, 'L');
-        int r = this.getChild(i, 'R');
+        int l = getChild(i, 'L');
+        int r = getChild(i, 'R');
 
         if( inHeap(heap, r) ){
-            if( heap.get(i) > heap.get(l) && heap.get(i) > heap.get(r)){ return; }
+            if( heap.get(i) > heap.get(l) && heap.get(i) > heap.get(r)){ return heap; }
             if ( heap.get(l) > heap.get(r) ){
                 swap(heap, l, i);
                 heapify(heap, l);
@@ -89,19 +91,20 @@ class BinaryHeap {
                 swap(heap, l, i);
             }
         }
+        return heap;
     }
 
-    private void heapify(ArrayList<Integer> heap, int i, int lock){
+    private ArrayList<Integer> heapify( ArrayList<Integer> heap, int i, int lock ){
         //heapifies up to the lock
         ArrayList<Integer> lockedHeap = new ArrayList<>();
         for( int j = 0; j <= lock; j++ ){
             lockedHeap.add(heap.get(j));
         }
-        heapify(lockedHeap, i);
-        for( int j = lock; j < heap.size(); i++ ){
+        lockedHeap = heapify(lockedHeap, i);
+        for( int j = lock + 1; j < heap.size(); j++ ){
             lockedHeap.add(heap.get(j));
         }
-        heap = (ArrayList<Integer>) lockedHeap.clone();
+        return lockedHeap;
     }
 
 }
