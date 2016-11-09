@@ -8,15 +8,13 @@ public class Test {
     public static void main(String[] args) {
 
         // # BinaryTreeNode test
-        test_ShapeConstructor();
-        test_ShapeConstructor();
-        test_ShapeConstructor();
+        test_SameTree();
+        test_DoubleTree();
 
         // # BinaryHeap test
-        test_GeometryKitConstructor();
-        test_ShapeConstructor();
-        test_ShapeConstructor();
+        //test_GetSortedElements();
 
+        //show results
         sumUp();
 
     }
@@ -78,28 +76,173 @@ public class Test {
     }
 
     //Actual Tests ----------------------------------------------------------------
-    private static void test_EstimateArea() {
-        testingMethod("Shape Area Estimatior");
+    private static void test_SameTree() {
+        testingMethod("SameTree method");
 
         try{
-            Circle circle = new Circle(0, 0, 1);
-            circle.throwMillionDarts(false);
-            boolean test = (circle.estimateArea() >= 3.1) && (circle.estimateArea() <= 3.2) ;
-            displaySuccessIfTrue(test, "Circle");
+            BinaryTreeNode tree = new BinaryTreeNode("1");
+            BinaryTreeNode tree2 = new BinaryTreeNode("1");
+            boolean test = tree.sameTree(tree, tree2);
+            displaySuccessIfTrue(test, "1 element Tree");
         } catch (UnsupportedOperationException NYI){
             displayUnimplementedMethodFailure();
         }
 
         try{
-            Circle circle = new Circle(0, 0, 1);
-            circle.throwMillionDarts(false);
-            boolean test = (circle.estimateArea() >= 3.1) && (circle.estimateArea() <= 3.2) ;
-            displaySuccessIfTrue(test, "Square");
+            BinaryTreeNode tree = new BinaryTreeNode("1");
+            tree.add("2", "L");
+            tree.add("3", "R");
+            BinaryTreeNode tree2 = new BinaryTreeNode("1");
+            tree2.add("2", "L");
+            tree2.add("3", "R");
+            boolean test = tree.sameTree(tree, tree2);
+            displaySuccessIfTrue(test, "3 element Tree");
+        } catch (UnsupportedOperationException NYI){
+            displayUnimplementedMethodFailure();
+        }
+
+        try{
+            BinaryTreeNode tree = new BinaryTreeNode("1");
+            BinaryTreeNode tree2 = new BinaryTreeNode("2");
+            boolean test = !tree.sameTree(tree, tree2);
+            displaySuccessIfTrue(test, "1 element != Tree");
+        } catch (UnsupportedOperationException NYI){
+            displayUnimplementedMethodFailure();
+        }
+
+        try{
+            BinaryTreeNode tree = new BinaryTreeNode("1");
+            tree.add("2", "L");
+            tree.add("3", "R");
+            BinaryTreeNode tree2 = new BinaryTreeNode("1");
+            tree2.add("2", "L");
+            tree2.add("Jamon", "R");
+            boolean test = !tree.sameTree(tree, tree2);
+            displaySuccessIfTrue(test, "3 element != Tree");
+        } catch (UnsupportedOperationException NYI){
+            displayUnimplementedMethodFailure();
+        }
+
+        try{
+            BinaryTreeNode tree = new BinaryTreeNode("1");
+            tree.add("2", "L");
+            tree.add("3", "R");
+            tree.getChild("L").add("4", "L");
+            tree.getChild("L").add("5", "R");
+            BinaryTreeNode tree2 = new BinaryTreeNode("1");
+            tree2.add("2", "L");
+            tree2.add("3", "R");
+            tree2.getChild("L").add("4", "L");
+            tree2.getChild("L").add("5", "R");
+            boolean test = tree.sameTree(tree, tree2);
+            displaySuccessIfTrue(test, "5 element Tree");
+        } catch (UnsupportedOperationException NYI){
+            displayUnimplementedMethodFailure();
+        }
+
+        try{
+            BinaryTreeNode tree = new BinaryTreeNode("1");
+            tree.add("2", "L");
+            tree.add("3", "R");
+            tree.getChild("L").add("4", "L");
+            tree.getChild("L").add("5", "R");
+            BinaryTreeNode tree2 = new BinaryTreeNode("1");
+            tree2.add("2", "L");
+            tree2.add("3", "R");
+            tree2.getChild("R").add("4", "L");
+            tree2.getChild("R").add("5", "R");
+            boolean test = !tree.sameTree(tree, tree2);
+            displaySuccessIfTrue(test, "= elements != structure");
         } catch (UnsupportedOperationException NYI){
             displayUnimplementedMethodFailure();
         }
 
         showResults();
+    }
+
+    private static void test_DoubleTree() {
+        testingMethod("DoubleTree method");
+
+        try{
+            BinaryTreeNode tree = new BinaryTreeNode("1");
+            tree.doubleTree();
+            BinaryTreeNode tree2 = new BinaryTreeNode("1");
+            tree2.add("1", "L");
+            boolean test = tree.sameTree(tree, tree2);
+            displaySuccessIfTrue(test, "1 element Tree");
+        } catch (UnsupportedOperationException NYI){
+            displayUnimplementedMethodFailure();
+        }
+
+        try{
+            BinaryTreeNode tree = new BinaryTreeNode("1");
+            tree.add("2", "L");
+            tree.add("3", "R");
+            tree.doubleTree();
+            BinaryTreeNode tree2 = new BinaryTreeNode("1");
+            tree2.add("1", "L");
+            tree2.getChild("L").add("2", "L");
+            tree2.getChild("L").getChild("L").add("2", "L");
+            tree2.add("3", "R");
+            tree2.getChild("R").add("3", "L");
+
+            boolean test = tree.sameTree(tree, tree2);
+            displaySuccessIfTrue(test, "3 element Tree");
+        } catch (UnsupportedOperationException NYI){
+            displayUnimplementedMethodFailure();
+        }
+
+        try{
+            BinaryTreeNode tree = new BinaryTreeNode("1");
+            tree.add("2", "L");
+            tree.add("3", "R");
+            tree.getChild("R").add("4", "R");
+            tree.doubleTree();
+            BinaryTreeNode tree2 = new BinaryTreeNode("1");
+            tree2.add("1", "L");
+            tree2.getChild("L").add("2", "L");
+            tree2.getChild("L").getChild("L").add("2", "L");
+            tree2.add("3", "R");
+            tree2.getChild("R").add("3", "L");
+            tree2.getChild("R").add("4", "R");
+            tree2.getChild("R").getChild("R").add("4", "L");
+
+            boolean test = tree.sameTree(tree, tree2);
+            displaySuccessIfTrue(test, "5 element Tree");
+        } catch (UnsupportedOperationException NYI){
+            displayUnimplementedMethodFailure();
+        }
+
+        try{
+            BinaryTreeNode tree = new BinaryTreeNode("1");
+            tree.doubleTree();
+            BinaryTreeNode tree2 = new BinaryTreeNode("1");
+            tree2.add("1", "R");
+            boolean test = !tree.sameTree(tree, tree2);
+            displaySuccessIfTrue(test, "1 element != Tree");
+        } catch (UnsupportedOperationException NYI){
+            displayUnimplementedMethodFailure();
+        }
+
+        try{
+            BinaryTreeNode tree = new BinaryTreeNode("1");
+            tree.add("2", "L");
+            tree.add("3", "R");
+            tree.doubleTree();
+            BinaryTreeNode tree2 = new BinaryTreeNode("1");
+            tree2.add("1", "L");
+            tree2.getChild("L").add("3", "L");
+            tree2.getChild("L").getChild("L").add("2", "L");
+            tree2.add("3", "R");
+            tree2.getChild("R").add("3", "L");
+
+            boolean test = !tree.sameTree(tree, tree2);
+            displaySuccessIfTrue(test, "3 element != Tree");
+        } catch (UnsupportedOperationException NYI){
+            displayUnimplementedMethodFailure();
+        }
+
+            showResults();
     }
 
 }
