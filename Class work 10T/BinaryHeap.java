@@ -51,13 +51,16 @@ class BinaryHeap {
     }
 
     public ArrayList<Integer> getSortedElements () {
+        //to avoid "unsafe operations" i could override the behaviour of clone (i.e. write a helper method for cloning) and thus I would not have to cast the Object to ArrayList<> however time is precious for this assigment.
 
         ArrayList<Integer> sortedHeap = (ArrayList<Integer>) this.heap.clone();
+        if(sortedHeap.size() == 1) { return sortedHeap; }
+
         for(int i = sortedHeap.size() - 1; i > 1; i --){
             swap(sortedHeap, 0, i);
             sortedHeap = heapify(sortedHeap, 0, i-1);
         }
-        //tiny correction
+        //with this structure we miss one swap at the end
         swap(sortedHeap, 0, 1);
         return sortedHeap;
     }

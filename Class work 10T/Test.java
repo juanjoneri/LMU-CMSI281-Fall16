@@ -12,7 +12,7 @@ public class Test {
         test_DoubleTree();
 
         // # BinaryHeap test
-        //test_GetSortedElements();
+        test_GetSortedElements();
 
         //show results
         sumUp();
@@ -244,5 +244,70 @@ public class Test {
 
             showResults();
     }
+
+    private static void test_GetSortedElements() {
+        testingMethod("getSortedElements method");
+
+        try{
+            BinaryHeap heap = new BinaryHeap();
+            heap.insert(1);
+            boolean test = heap.getSortedElements().get(0) == 1;
+            displaySuccessIfTrue(test, "1 element Heap");
+        } catch (UnsupportedOperationException NYI){
+            displayUnimplementedMethodFailure();
+        }
+
+        try{
+            BinaryHeap heap = new BinaryHeap();
+            heap.insert(1);
+            heap.insert(2);
+            heap.insert(3);
+            boolean test = heap.getSortedElements().get(1) == 2;
+            displaySuccessIfTrue(test, "3 element Heap");
+        } catch (UnsupportedOperationException NYI){
+            displayUnimplementedMethodFailure();
+        }
+
+        try{
+            BinaryHeap heap = new BinaryHeap();
+            heap.insert(1);
+            heap.insert(7);
+            heap.insert(3);
+            boolean test = heap.getSortedElements().get(1) == 3;
+            displaySuccessIfTrue(test, "3 element (disordered) Heap");
+        } catch (UnsupportedOperationException NYI){
+            displayUnimplementedMethodFailure();
+        }
+
+        try{
+            BinaryHeap heap = new BinaryHeap();
+            for( int i = 0; i < 10; i ++){
+                heap.insert(10-i);
+            }
+            boolean test = true;
+            for( int i = 0; i < 10; i ++){
+                test = test && heap.getSortedElements().get(i) == i + 1;
+            }
+            displaySuccessIfTrue(test, "10 element Heap");
+        } catch (UnsupportedOperationException NYI){
+            displayUnimplementedMethodFailure();
+        }
+
+        try{
+            BinaryHeap heap = new BinaryHeap();
+            for( int i = 0; i < 10; i ++){
+                heap.insert(100-i);
+            }
+            boolean test = heap.getSortedElements().size() == 10;
+            displaySuccessIfTrue(test, "10 element Heap (size)");
+        } catch (UnsupportedOperationException NYI){
+            displayUnimplementedMethodFailure();
+        }
+
+
+        showResults();
+    }
+
+
 
 }
