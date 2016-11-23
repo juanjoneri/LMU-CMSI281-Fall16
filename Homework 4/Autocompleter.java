@@ -6,13 +6,14 @@ public class Autocompleter implements AutocompleterInterface {
     // Fields
     // -----------------------------------------------------------
     TTNode root;
-
+    private ArrayList<String> terms;
 
     // -----------------------------------------------------------
     // Constructor
     // -----------------------------------------------------------
     Autocompleter () {
         root = null;
+        terms = null;
     }
 
 
@@ -37,7 +38,9 @@ public class Autocompleter implements AutocompleterInterface {
     }
 
     public ArrayList<String> getSortedTerms () {
-        throw new UnsupportedOperationException();
+        terms = new ArrayList<>();
+        getSortedTerms(root, new String());
+        return terms;
     }
 
 
@@ -85,7 +88,7 @@ public class Autocompleter implements AutocompleterInterface {
         return node;
     }
 
-    private boolean hasTerm (TTNode node, String query, int index){
+    private boolean hasTerm (TTNode node, String query, int index) {
         char[] word = query.toCharArray();
 
         if (node == null){ return false; }
@@ -102,6 +105,24 @@ public class Autocompleter implements AutocompleterInterface {
                 return hasTerm(node.mid, query, index + 1);
             }
         }
+    }
+
+    private void getSortedTerms (TTNode node, String prefix) {
+        if (node == null){ return; }
+
+        getSortedTerms(node.left, prefix);
+
+        prefix += node.letter;
+        if (node.wordEnd) { terms.add(prefix); }
+
+        getSortedTerms(node.mid, prefix);
+        prefix = trimLast(prefix);
+
+        getSortedTerms(node.right, prefix);
+    }
+
+    private String trimLast (String toTrim) {
+        return toTrim.substring(0, toTrim.length() - 1);
     }
 
     // -----------------------------------------------------------
