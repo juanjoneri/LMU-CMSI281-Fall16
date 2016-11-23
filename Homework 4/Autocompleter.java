@@ -25,14 +25,7 @@ public class Autocompleter implements AutocompleterInterface {
     }
 
     public void addTerm (String toAdd) {
-        int length = toAdd.length();
-        TTNode current = root;
-
-        for(int i = 0; i < length - 1 ; i++) {
-            char c = toAdd.charAt(i);
-            current = addChar( c, current, false );
-        }
-        addChar( toAdd.charAt(length - 1), current, true );
+        root = addTerm(toAdd, root, 0);
     }
 
     public boolean hasTerm (String query) {
@@ -72,24 +65,24 @@ public class Autocompleter implements AutocompleterInterface {
 
     // [!] Add your own helper methods here!
 
-    private TTNode addChar (char c, TTNode node, boolean wordEnd) {
-        // Adds the char to wherever it corresponds in the node and returns the new node so another char can be inserted to it
-        if ( node == null ){
-            //System.out.println("add " + c);
-            node = new TTNode(c, wordEnd);
-            return node.mid;
+    private TTNode addTerm (String toAdd, TTNode node, int index) {
+        char[] word = toAdd.toCharArray();
+
+        if (node == null){ node = new TTNode(word[index], false); }
+
+        int comp = compareChars(word[index], node.letter);
+        if (comp < 0){
+            node.left = addTerm(toAdd, node.left, index);
+        } else if (comp > 0) {
+            node.right = addTerm(toAdd, node.right, index);
         } else {
-            int comp = compareChars ( c, node.letter );
-            if ( comp == 0 ){
-                return node.mid;
-            } else if ( comp > 0 ) {
-                // c is alphabetically greater than node.char
-                return addChar( c, node.right, wordEnd );
+            if (index < word.length - 1) {
+                node.mid = addTerm(toAdd, node.mid, index + 1);
             } else {
-                // c is alphabetically less than node.char
-                return addChar( c, node.left, wordEnd );
+                node.wordEnd = true;
             }
         }
+        return node;
     }
 
     // -----------------------------------------------------------
