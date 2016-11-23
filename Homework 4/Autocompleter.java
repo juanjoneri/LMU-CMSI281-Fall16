@@ -25,15 +25,14 @@ public class Autocompleter implements AutocompleterInterface {
     }
 
     public void addTerm (String toAdd) {
-        int length = s.length();
-        TTNoden current = root;
+        int length = toAdd.length();
+        TTNode current = root;
 
         for(int i = 0; i < length - 1 ; i++) {
-            char c = s.charAt(i);
-            current = addChar( c, current );
+            char c = toAdd.charAt(i);
+            current = addChar( c, current, false );
         }
-        addChar( s.charAt(length - 1), current );
-        current.wordEnd = true;
+        addChar( toAdd.charAt(length - 1), current, true );
     }
 
     public boolean hasTerm (String query) {
@@ -73,21 +72,22 @@ public class Autocompleter implements AutocompleterInterface {
 
     // [!] Add your own helper methods here!
 
-    private TTNode addChar (char c, TTNode node) {
+    private TTNode addChar (char c, TTNode node, boolean wordEnd) {
         // Adds the char to wherever it corresponds in the node and returns the new node so another char can be inserted to it
         if ( node == null ){
-            node = new TTNode(c, false);
+            //System.out.println("add " + c);
+            node = new TTNode(c, wordEnd);
             return node.mid;
         } else {
-            int comp = compareChars ( c, node.char );
-            if ( comp = 0 ){
+            int comp = compareChars ( c, node.letter );
+            if ( comp == 0 ){
                 return node.mid;
             } else if ( comp > 0 ) {
                 // c is alphabetically greater than node.char
-                return addChar( c, node.right );
+                return addChar( c, node.right, wordEnd );
             } else {
                 // c is alphabetically less than node.char
-                return addChar( c, node.left );
+                return addChar( c, node.left, wordEnd );
             }
         }
     }
