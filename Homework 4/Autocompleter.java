@@ -21,11 +21,13 @@ public class Autocompleter implements AutocompleterInterface {
     // -----------------------------------------------------------
 
     public boolean isEmpty () {
-        throw new UnsupportedOperationException();
+        return root == null;
     }
 
     public void addTerm (String toAdd) {
-        throw new UnsupportedOperationException();
+        for(char c : toAdd.toCharArray()) {
+
+        }
     }
 
     public boolean hasTerm (String query) {
@@ -65,6 +67,24 @@ public class Autocompleter implements AutocompleterInterface {
 
     // [!] Add your own helper methods here!
 
+    private TTNode addChar ( char c, TTNode node ) {
+        // Adds the char to wherever it corresponds in the node and returns the new node so another char can be inserted to it
+        if ( node == null ){
+            node.letter = c;
+            return node.mid;
+        } else {
+            int comp = compareChars ( c, node.char );
+            if ( comp = 0 ){
+                return node.mid;
+            } else if ( comp > 0 ) {
+                // c is alphabetically greater than node.char
+                return addChar( c, node.right );
+            } else {
+                // c is alphabetically less than node.char
+                return addChar( c, node.left );
+            }
+        }
+    }
 
     // -----------------------------------------------------------
     // TTNode Internal Storage
