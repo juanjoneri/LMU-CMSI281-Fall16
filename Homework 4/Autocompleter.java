@@ -25,9 +25,15 @@ public class Autocompleter implements AutocompleterInterface {
     }
 
     public void addTerm (String toAdd) {
-        for(char c : toAdd.toCharArray()) {
+        int length = s.length();
+        TTNoden current = root;
 
+        for(int i = 0; i < length - 1 ; i++) {
+            char c = s.charAt(i);
+            current = addChar( c, current );
         }
+        addChar( s.charAt(length - 1), current );
+        current.wordEnd = true;
     }
 
     public boolean hasTerm (String query) {
@@ -67,10 +73,10 @@ public class Autocompleter implements AutocompleterInterface {
 
     // [!] Add your own helper methods here!
 
-    private TTNode addChar ( char c, TTNode node ) {
+    private TTNode addChar (char c, TTNode node) {
         // Adds the char to wherever it corresponds in the node and returns the new node so another char can be inserted to it
         if ( node == null ){
-            node.letter = c;
+            node = new TTNode(c, false);
             return node.mid;
         } else {
             int comp = compareChars ( c, node.char );
