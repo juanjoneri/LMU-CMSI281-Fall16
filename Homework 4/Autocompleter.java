@@ -29,7 +29,7 @@ public class Autocompleter implements AutocompleterInterface {
     }
 
     public boolean hasTerm (String query) {
-        throw new UnsupportedOperationException();
+        return hasTerm(root, normalizeTerm(query), 0);
     }
 
     public String getSuggestedTerm (String query) {
@@ -83,6 +83,25 @@ public class Autocompleter implements AutocompleterInterface {
             }
         }
         return node;
+    }
+
+    private boolean hasTerm (TTNode node, String query, int index){
+        char[] word = query.toCharArray();
+
+        if (node == null){ return false; }
+
+        int comp = compareChars(word[index], node.letter);
+        if (comp < 0){
+            return hasTerm(node.left, query, index);
+        } else if (comp > 0) {
+            return hasTerm(node.right, query, index);
+        } else {
+            if (index + 1 == word.length) {
+                return node.wordEnd;
+            } else {
+                return hasTerm(node.mid, query, index + 1);
+            }
+        }
     }
 
     // -----------------------------------------------------------
