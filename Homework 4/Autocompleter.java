@@ -25,7 +25,7 @@ public class Autocompleter implements AutocompleterInterface {
     }
 
     public void addTerm (String toAdd) {
-        root = addTerm(toAdd, root, 0);
+        root = addTerm(normalizeTerm(toAdd), root, 0);
     }
 
     public boolean hasTerm (String query) {
