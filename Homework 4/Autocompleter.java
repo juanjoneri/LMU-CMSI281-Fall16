@@ -34,7 +34,8 @@ public class Autocompleter implements AutocompleterInterface {
     }
 
     public String getSuggestedTerm (String query) {
-        throw new UnsupportedOperationException();
+        if ( !hasPrefix(root, normalizeTerm(query), 0) ) { return null; }
+        return getSuggestedTerm(root, normalizeTerm(query), 0);
     }
 
     public ArrayList<String> getSortedTerms () {
@@ -105,6 +106,52 @@ public class Autocompleter implements AutocompleterInterface {
                 return hasTerm(node.mid, query, index + 1);
             }
         }
+    }
+
+    private boolean hasPrefix (TTNode node, String query, int index) {
+        //Same as hasTerm but does not require the last char to be a word end
+        char[] word = query.toCharArray();
+
+        if (node == null){ return false; }
+
+        int comp = compareChars(word[index], node.letter);
+        if (comp < 0){
+            return hasPrefix(node.left, query, index);
+        } else if (comp > 0) {
+            return hasPrefix(node.right, query, index);
+        } else {
+            if (index + 1 == word.length) {
+                return true;
+            } else {
+                return hasPrefix(node.mid, query, index + 1);
+            }
+        }
+    }
+
+    private String getSuggestedTerm (TTNode node, String query, int index) {
+        //Same as hasPrefix but once it has found it returns the first ending it finds corresponding to that prefix
+        char[] word = query.toCharArray();
+
+        if (node == null){ return null; }
+
+        int comp = compareChars(word[index], node.letter);
+        if (comp < 0){
+            return getSuggestedTerm(node.left, query, index);
+        } else if (comp > 0) {
+            return getSuggestedTerm(node.right, query, index);
+        } else {
+            if (index + 1 == word.length) {
+                return trimLast(query) + getEnding(node);
+            } else {
+                return getSuggestedTerm(node.mid, query, index + 1);
+            }
+        }
+    }
+
+    private String getEnding (TTNode node) {
+        if (node == null) { return null; }
+        String ending = String.valueOf(node.letter);
+        return node.wordEnd ? ending : ending + getEnding (node.mid);
     }
 
     private void getSortedTerms (TTNode node, String prefix) {
