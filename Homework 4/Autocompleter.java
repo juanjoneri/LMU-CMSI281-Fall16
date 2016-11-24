@@ -129,7 +129,7 @@ public class Autocompleter implements AutocompleterInterface {
     }
 
     private String getSuggestedTerm (TTNode node, String query, int index) {
-        //Same as hasPrefix but once it has found it returns the first ending it finds corresponding to that prefix
+        //Same as hasPrefix but once it has found it, returns the first complete word it finds corresponding to that prefix
         char[] word = query.toCharArray();
 
         if (node == null){ return null; }
@@ -149,6 +149,7 @@ public class Autocompleter implements AutocompleterInterface {
     }
 
     private String getEnding (TTNode node) {
+        // Will find the first complete end of word leading from that node
         if (node == null) { return null; }
         String ending = String.valueOf(node.letter);
         return node.wordEnd ? ending : ending + getEnding (node.mid);
@@ -169,6 +170,7 @@ public class Autocompleter implements AutocompleterInterface {
     }
 
     private String trimLast (String toTrim) {
+        //will remove the last char of a string
         return toTrim.substring(0, toTrim.length() - 1);
     }
 
