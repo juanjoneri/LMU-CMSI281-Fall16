@@ -2,6 +2,10 @@
 // PROBLEM 1:
 // -----------------------------------------------------------
 // [PART I]
+
+import java.util.Scanner;
+import java.util.HashSet;
+
 public class UniqueWords {
 
     public static void main (String[] args) {
@@ -10,8 +14,22 @@ public class UniqueWords {
 
         String[] words = input.nextLine().split(" ");
 
-        // TODO: Your improved solution here!
+        HashSet<String> uniqueWords = new HashSet<>();
+        HashSet<String> repeatedWords = new HashSet<>();
 
+        for(String word : words){
+            if(uniqueWords.contains(word)){
+                repeatedWords.add(word);
+            } else {
+                uniqueWords.add(word);
+            }
+        }
+
+        for(String word : repeatedWords){
+            uniqueWords.remove(word);
+        }
+
+        int count = uniqueWords.size();
         System.out.println("There are " + count + " unique words in that sentence.");
     }
 
@@ -19,7 +37,7 @@ public class UniqueWords {
 
 // [PART II]
 // Asymptotic Runtime Complexity of OLD UniqueWords.java (the solution):  O(???)
-// Asymptotic Runtime Complexity of NEW UniqueWords.java (the above):     O(???)
+// Asymptotic Runtime Complexity of NEW UniqueWords.java (the above):     O(n)
 
 // -----------------------------------------------------------
 // PROBLEM 2:
