@@ -18,13 +18,14 @@ public class UniqueWords {
         HashSet<String> repeatedWords = new HashSet<>();
 
         for(String word : words){
-            if(uniqueWords.contains(word)){
-                repeatedWords.add(word);
-            } else {
+            if(!uniqueWords.contains(word)){
                 uniqueWords.add(word);
+            } else {
+                repeatedWords.add(word);
             }
         }
 
+        // We still have one copy for each of the repeated Words
         for(String word : repeatedWords){
             uniqueWords.remove(word);
         }
@@ -36,7 +37,7 @@ public class UniqueWords {
 }
 
 // [PART II]
-// Asymptotic Runtime Complexity of OLD UniqueWords.java (the solution):  O(???)
+// Asymptotic Runtime Complexity of OLD UniqueWords.java (the solution):  O(n^2)
 // Asymptotic Runtime Complexity of NEW UniqueWords.java (the above):     O(n)
 
 // -----------------------------------------------------------
