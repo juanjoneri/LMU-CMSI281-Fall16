@@ -43,5 +43,15 @@ public class UniqueWords {
 // -----------------------------------------------------------
 // PROBLEM 2:
 // -----------------------------------------------------------
-// T_1(n) = \Theta(???)
-// T_2(n) = \Theta(???)
+/*
+ * Recurrence #1:
+ * T_1(n) = 2 * T(n / 3) + n
+ * a = 2; b = 3; f = n;
+ * T_1(n) = \Theta(n) by case 3 (REC dominant)
+/*
+/*
+ * Recurrence #2:
+ * T_2(n) = 4 * T(n / 2) + n^2
+ * a = 4; b = 2; f = n^2;
+ * T_2(n) = \Theta(n^2 * log(n)) by case 2 (NEITHER dominant)
+/*
