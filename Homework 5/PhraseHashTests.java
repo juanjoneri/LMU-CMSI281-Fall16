@@ -1,5 +1,3 @@
-package sentinal;
-
 import static org.junit.Assert.*;
 
 import org.junit.Before;
@@ -8,25 +6,25 @@ import org.junit.Test;
 import org.junit.rules.Timeout;
 
 public class PhraseHashTests {
-    
+
     // =================================================
     // Test Configuration
     // =================================================
-    
+
     // Global timeout to prevent infinite loops from
     // crashing the test suite
     @Rule
     public Timeout globalTimeout = Timeout.seconds(2);
-    
-    // Used as the basic empty PhraseHash to test; 
+
+    // Used as the basic empty PhraseHash to test;
     // the @Before method is run before every @Test
     PhraseHash p;
     @Before
     public void init () {
         p = new PhraseHash();
     }
-    
-    
+
+
     // =================================================
     // Unit Tests
     // =================================================
@@ -56,7 +54,7 @@ public class PhraseHashTests {
         assertEquals(null, p.get("zoo"));
         assertEquals(null, p.get("worst"));
     }
-    
+
     @Test
     public void testSize() {
         p.put("bad");
@@ -66,7 +64,7 @@ public class PhraseHashTests {
         p.put("worst job");
         assertEquals(5, p.size());
     }
-    
+
     @Test
     public void testIsEmpty() {
         assertEquals(true, p.isEmpty());
@@ -77,7 +75,7 @@ public class PhraseHashTests {
         p.put("awesome job");
         assertEquals(false, p.isEmpty());
     }
-    
+
     @Test
     public void testLongestLength() {
         assertEquals(0, p.longestLength());

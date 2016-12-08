@@ -1,5 +1,3 @@
-package sentinal;
-
 import static org.junit.Assert.*;
 
 import java.io.FileNotFoundException;
@@ -10,17 +8,17 @@ import org.junit.Test;
 import org.junit.rules.Timeout;
 
 public class SentinalTests {
-    
+
     // =================================================
     // Test Configuration
     // =================================================
-    
+
     // Global timeout to prevent infinite loops from
     // crashing the test suite
     @Rule
     public Timeout globalTimeout = Timeout.seconds(2);
-    
-    // Used as the basic empty PhraseHash to test; 
+
+    // Used as the basic empty PhraseHash to test;
     // the @Before method is run before every @Test
     Sentinal s;
     // [!] IMPORTANT: Replace the below with an absolute
@@ -37,8 +35,8 @@ public class SentinalTests {
             fail();
         }
     }
-    
-    
+
+
     // =================================================
     // Unit Tests
     // =================================================
