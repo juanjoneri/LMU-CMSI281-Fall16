@@ -17,7 +17,10 @@ public class Sentinal implements SentinalInterface {
     // -----------------------------------------------------------
 
     Sentinal (String posFile, String negFile) throws FileNotFoundException {
-        // TODO
+        this.posHash = new PhraseHash();
+        loadSentimentFile(posFile, true);
+        this.negHash = new PhraseHash();
+        loadSentimentFile(negFile, false);
     }
 
 
@@ -26,11 +29,23 @@ public class Sentinal implements SentinalInterface {
     // -----------------------------------------------------------
 
     public void loadSentiment (String phrase, boolean positive) {
-        throw new UnsupportedOperationException();
+        if (positive) {
+            this.posHash.put(phrase);
+        } else {
+            this.negHash.put(phrase);
+        }
     }
 
     public void loadSentimentFile (String filename, boolean positive) throws FileNotFoundException {
-        throw new UnsupportedOperationException();
+        File file = new File(filename);
+        Scanner scanner = new Scanner(file);
+        if (isEmpty(scanner)) return;
+
+        do {
+            loadSentiment(scanner.nextLine(), positive);
+        } while (scanner.hasNextLine());
+
+        scanner.close();
     }
 
     public String sentinalyze (String filename) throws FileNotFoundException {
@@ -42,6 +57,9 @@ public class Sentinal implements SentinalInterface {
     // Helper Methods
     // -----------------------------------------------------------
 
-    // TODO: Add your helper methods here!
+    //Returns wether the file in the scanner is empty
+    private boolean isEmpty (Scanner scanner) {
+        return !scanner.hasNextLine();
+    }
 
 }
