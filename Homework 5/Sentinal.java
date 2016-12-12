@@ -39,6 +39,7 @@ public class Sentinal implements SentinalInterface {
     public void loadSentimentFile (String filename, boolean positive) throws FileNotFoundException {
         File file = new File(filename);
         Scanner scanner = new Scanner(file);
+
         if (isEmpty(scanner)) return;
 
         do {
@@ -54,6 +55,7 @@ public class Sentinal implements SentinalInterface {
         Scanner scanner = new Scanner(file);
 
         if (isEmpty(scanner)) return "neutral";
+
         int positive = 0;
         int negative = 0;
 
@@ -75,12 +77,15 @@ public class Sentinal implements SentinalInterface {
                     } else if (negHash.get(iiWord) != null){
                         negative ++;
                     }
+                    // I could go on with iiiWord
+                    // or even make a helper method given the ammount of repetition!
+                    // maybe next time...
                 }
             }
 
         } while (scanner.hasNextLine());
 
-        switch ( Integer.signum(positive - negative) ){
+        switch (Integer.signum(positive - negative)){
             case 1: return "positive";
             case -1: return "negative";
             default: return "neutral";
