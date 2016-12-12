@@ -37,18 +37,26 @@ public class PhraseHash implements PhraseHashInterface {
 
     public void put (String s) {
         int index = hash(s);
-        if (!buckets[index].contains(s)){
+        if (buckets[index] == null) {
+            buckets[index] = new LinkedList<>();
             buckets[index].add(s);
-            this.size ++;
-
-            int stringLength = length(s);
-            if (stringLength > this.longest) this.longest = stringLength;
+        } else if (!buckets[index].contains(s)) {
+            buckets[index].add(s);
+        } else {
+            return;
         }
+        this.size ++;
+
+        int stringLength = length(s);
+        if (stringLength > this.longest) this.longest = stringLength;
     }
 
     public String get (String s) {
         int index = hash(s);
-        return buckets[index].contains(s) ? s : null;
+        if (buckets[index] != null) {
+            return buckets[index].contains(s) ? s : null;
+        }
+        return null;
     }
 
     public int longestLength () {
